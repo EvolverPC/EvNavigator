@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 function renderHomePage() {
     const mainContent = document.getElementById('main-content');
     
-    // Data for the home page dashboard. In a larger app, this might also come from data.js
+    // Data for the home page dashboard.
     const pipelineStages = [
         { name: 'Due Diligence', count: 1, color: '#0ea5e9' },
         { name: 'Strategize', count: 3, color: '#14b8a6' },
@@ -28,7 +28,7 @@ function renderHomePage() {
         { id: 'scaleops', name: 'ScaleOps', stage: 'Strategize', arr: 19, nrr: 108, ebitda: 12, status: 'Needs Attention', statusColor: 'bg-orange-500', stageColor: 'bg-teal-100 text-teal-800' },
     ];
 
-    // This is the full HTML content for the home dashboard, taken from the original file's logic.
+    // This is the full HTML content for the home dashboard.
     mainContent.innerHTML = `
         <div class="bg-red-100 border-l-4 border-red-500 text-red-800 p-4 mb-8 rounded-r-lg" role="alert">
             <div class="flex">
@@ -68,15 +68,25 @@ function renderHomePage() {
         </div>
     `;
 
-    // Add event listener for the company cards to handle navigation
-    mainContent.addEventListener('click', (e) => {
-        const card = e.target.closest('[data-action="view-company"]');
-        if (card) {
+    // =================================================================
+    // THIS IS THE KEY FIX
+    // =================================================================
+    // We select all the company cards that were just rendered.
+    const companyCards = mainContent.querySelectorAll('[data-action="view-company"]');
+    
+    // We loop through each card and add a specific click listener to it.
+    // This is more robust than listening on the parent.
+    companyCards.forEach(card => {
+        card.addEventListener('click', () => {
             const companyId = card.dataset.companyId;
-            let state = loadState();
-            state.selectedCompanyId = companyId;
-            saveState(state);
-            window.location.href = `portco.html?company=${companyId}`;
-        }
+            
+            // If a valid companyId is found, update the state and navigate.
+            if (companyId) {
+                let state = loadState();
+                state.selectedCompanyId = companyId;
+                saveState(state);
+                window.location.href = `portco.html?company=${companyId}`;
+            }
+        });
     });
 }

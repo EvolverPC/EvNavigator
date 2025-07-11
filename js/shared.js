@@ -65,17 +65,22 @@ const Navigation = {
         if (!selector) return;
         selector.value = loadState().selectedCompanyId;
         
-        // This event listener should only be added once.
-        // A better approach is to add it in each page's JS file.
         selector.onchange = (e) => {
+            const newCompanyId = e.target.value;
+            const currentPage = Navigation.getCurrentPage();
+
             let state = loadState();
-            state.selectedCompanyId = e.target.value;
+            state.selectedCompanyId = newCompanyId;
             saveState(state);
             
-            if (e.target.value === 'all') {
+            if (newCompanyId === 'all') {
                 window.location.href = 'index.html';
-            } else {
-                window.location.href = `portco.html?company=${e.target.value}`;
+            } 
+            else if (currentPage === 'index') {
+                window.location.href = `portco.html?company=${newCompanyId}`;
+            }
+            else {
+                window.location.href = `${currentPage}.html?company=${newCompanyId}`;
             }
         };
     },
@@ -91,10 +96,39 @@ const Navigation = {
         });
     },
     
+    // =================================================================
+    // THIS IS THE NEW FUNCTION THAT FIXES THE NAVIGATION
+    // =================================================================
+    updateNavigationLinks() {
+        const { selectedCompanyId } = loadState();
+        const navLinks = document.querySelectorAll('#sidebar-menu .nav-link');
+
+        navLinks.forEach(link => {
+            const page = link.dataset.page;
+
+            // The home link always goes to the main index page
+            if (page === 'index' || page === 'home') {
+                link.href = 'index.html';
+                return; 
+            }
+
+            // If a specific company is selected, all other links should include it
+            if (selectedCompanyId && selectedCompanyId !== 'all') {
+                link.href = `${page}.html?company=${selectedCompanyId}`;
+            } else {
+                // If "All Companies" is selected, link to the base page.
+                // The page's own script is responsible for handling the missing ID.
+                link.href = `${page}.html`;
+            }
+        });
+    },
+
     updateAll() {
         this.updateHeaderTitle();
         this.updateCompanySelector();
         this.updateActiveNavigation();
+        // This new call ensures the sidebar links are always correct
+        this.updateNavigationLinks();
     }
 };
 
@@ -102,18 +136,20 @@ const Navigation = {
 // UTILITIES (Functions from original file)
 // =================================================================
 const Utils = {
-    typewriter(element, text, callback) {
+    // THIS IS THE NEW, FASTER, WORD-BY-WORD FUNCTION
+    typeWords(element, text, callback) {
         let i = 0;
+        const words = text.split(' ');
         element.innerHTML = "";
         const timer = setInterval(() => {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
+            if (i < words.length) {
+                element.innerHTML += words[i] + ' ';
                 i++;
             } else {
                 clearInterval(timer);
                 if (callback) callback();
             }
-        }, 10);
+        }, 100); // Faster interval
     },
 
     generateScenario(capabilityId, state, capabilities, capabilityScenarios) {

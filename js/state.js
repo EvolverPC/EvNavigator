@@ -21,6 +21,25 @@ function getInitialState() {
             activeWorkstream: null,
             minorObservationsExpanded: false,
         },
+        ariaSettings: {
+            isModalOpen: false,
+            ddDataRoom: true,
+            externalSources: {
+                main: true,
+                linkedin: true,
+                pitchbook: false,
+                glassdoor: true,
+                web: true,
+            },
+            internalSources: {
+                main: true,
+                erp: true,
+                crm: true,
+                hcm: false,
+                devops: true,
+                customerSuccess: true,
+            }
+        },
         modeling: {
             assessmentData: {
                 'sales-strategy': { current: 2, target: 4 }, 'brand-awareness': { current: 1, target: 4 },

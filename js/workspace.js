@@ -1,30 +1,19 @@
 // js/workspace.js - Logic for the workspace and final report page
 
-// This is the main entry point for the page.
 document.addEventListener('DOMContentLoaded', async () => {
-    // First, load shared components like header and sidebar
     await loadSharedComponents();
-    
-    // Now that components are loaded, get the current state
     let state = loadState();
-    
-    // Render the page based on the current state
     renderWorkspacePage(state);
-    
-    // Attach event listeners for this page
     initializeWorkspaceListeners();
 });
-
 
 function renderWorkspacePage(currentState) {
     const mainContent = document.getElementById('main-content');
     
     if (currentState.isReportFinalized) {
-        // Hide sidebar and show the final report
         document.getElementById('sidebar-container').style.display = 'none';
         mainContent.innerHTML = renderFinalReport(currentState);
     } else {
-        // Ensure sidebar is visible and show the workspace
         document.getElementById('sidebar-container').style.display = 'flex';
         mainContent.innerHTML = renderWorkspace(currentState);
     }
@@ -33,58 +22,78 @@ function renderWorkspacePage(currentState) {
 function renderWorkspace(currentState) {
     const { keyRisks, valueLevers, strategicNotes } = currentState.diligenceWorkspace;
     const flaggedItems = Object.values(keyRisks);
-    const vcpItems = valueLevers.filter(l => l.type === 'capability');
-    let summary = 'Aria has synthesized the current workspace...'; // Full summary logic here
-    const isWorkspaceActive = flaggedItems.length > 0 || vcpItems.length > 0 || strategicNotes.length > 0;
+    
+    let summary = 'ARIA has synthesized the current workspace. ';
+    if (flaggedItems.length === 0 && valueLevers.length === 0) {
+        summary += 'The workspace is clean. Begin by flagging critical insights or anomalies from the "Aria" tab to activate ARIA\'s synthesis.';
+    } else {
+        if (flaggedItems.length > 0) {
+            summary += `The primary risks identified are related to ${flaggedItems.map(item => `"${item.title}"`).join(' and ')}. These issues could materially impact revenue quality, predictability, and innovation capacity. `;
+        }
+        // Add more summary logic here as VCPs and notes are added
+    }
 
-    // Return the complete HTML string for the workspace
-    return `<div id="workspace-content" class="space-y-8">...</div>`; // Full HTML from previous response
+    const flaggedRisksHtml = flaggedItems.length > 0 
+        ? `<ul class="space-y-3">${flaggedItems.map(item => `
+            <li class="p-3 bg-amber-50 rounded-md border border-amber-200">
+                <p class="font-semibold text-amber-800">${item.title}</p>
+                <p class="text-sm text-gray-600">${item.impact}</p>
+            </li>`).join('')}</ul>` 
+        : `<p class="text-sm text-gray-500">No items have been flagged. Review the 'Aria' tab to flag insights for the workspace.</p>`;
+
+    return `
+        <div id="workspace-content" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Flagged Diligence Risks</h2>
+                    <div class="workspace-section p-6">${flaggedRisksHtml}</div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">ARIA's Actionable Recommendations</h2>
+                    <div class="workspace-section p-6">
+                        <p class="text-sm text-gray-500">No recommendations yet. Flag an item to get started.</p>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Select Key Strategic Observations</h2>
+                    <div class="workspace-section p-6">
+                        <!-- Strategic notes selection can be added here -->
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">AI Strategic Narrative</h2>
+                    <div class="workspace-section p-6">
+                        <div class="p-4 bg-gray-50 border-l-4 border-gray-500">
+                            <p class="text-sm text-gray-800">${summary}</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Proposed 100-Day Plan Workstreams</h2>
+                    <div class="workspace-section p-6">
+                        <p class="text-sm text-gray-500">No workstreams proposed. Accept ARIA's recommendations to generate them.</p>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Deep Research Simulation Lab</h2>
+                    <div class="workspace-section p-6">
+                        <!-- Simulation lab can be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 function renderFinalReport(currentState) {
-    // Return the complete HTML string for the final report
-    return `<div id="final-report-content" class="mx-auto bg-white p-12 shadow-2xl rounded-lg">...</div>`; // Full HTML
+    // This function can be built out later based on the finalized workspace state
+    return `<div id="final-report-content" class="mx-auto bg-white p-12 shadow-2xl rounded-lg">
+                <h1 class="text-center text-3xl font-bold">Final Report (Under Construction)</h1>
+            </div>`;
 }
 
 function initializeWorkspaceListeners() {
-    const mainContent = document.getElementById('main-content');
-
-    mainContent.addEventListener('click', (e) => {
-        const target = e.target.closest('[data-action]');
-        if (!target) return;
-        let state = loadState();
-
-        switch (target.dataset.action) {
-            case 'finalize-analysis':
-                state.isReportFinalized = true;
-                saveState(state);
-                renderWorkspacePage(state); // Re-render the whole page
-                break;
-            case 'export-report':
-                Utils.generatePDF('final-report-content');
-                break;
-            case 'back-to-workspace':
-                state.isReportFinalized = false;
-                saveState(state);
-                renderWorkspacePage(state); // Re-render the whole page
-                break;
-        }
-    });
-
-    mainContent.addEventListener('change', (e) => {
-        const target = e.target.closest('[data-action="select-note"]');
-        if (!target) return;
-        
-        let state = loadState();
-        const note = selectableNotes.find(n => n.id === target.dataset.noteId);
-        
-        if (target.checked) {
-            state.diligenceWorkspace.strategicNotes.push(note);
-        } else {
-            state.diligenceWorkspace.strategicNotes = state.diligenceWorkspace.strategicNotes.filter(n => n.id !== target.dataset.noteId);
-        }
-        
-        saveState(state);
-        renderWorkspacePage(state); // Re-render to update summary and button
-    });
+    // Event listeners for the workspace page can be added here as functionality grows
 }
