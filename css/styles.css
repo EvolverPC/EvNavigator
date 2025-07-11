@@ -1,0 +1,165 @@
+/* css/styles.css */
+
+/* Base Styles */
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #F9FAFB; 
+    color: rgba(9,26,45,1); 
+    margin: 0;
+    padding: 0;
+}
+
+/* Animations */
+@keyframes ping { 
+    75%, 100% { 
+        transform: scale(2); 
+        opacity: 0; 
+    } 
+}
+.animate-ping { 
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; 
+}
+
+@keyframes spin { 
+    to { 
+        transform: rotate(360deg); 
+    } 
+}
+.animate-spin { 
+    animation: spin 1s linear infinite; 
+}
+
+@keyframes bounce { 
+    0%, 80%, 100% { 
+        transform: scale(0); 
+    } 
+    40% { 
+        transform: scale(1.0); 
+    } 
+}
+
+/* Component Styles */
+.thinking-dot { 
+    animation: bounce 1.4s infinite ease-in-out both; 
+}
+.thinking-dot.dot1 { 
+    animation-delay: -0.32s; 
+}
+.thinking-dot.dot2 { 
+    animation-delay: -0.16s; 
+}
+
+/* Building animation for content reveals */
+.build-item { 
+    opacity: 0; 
+    transform: translateY(10px); 
+    transition: opacity 0.5s ease, transform 0.5s ease; 
+}
+.build-item.visible { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
+/* Navigation Active States */
+.nav-link.active {
+    background-color: rgb(240 249 255); /* bg-sky-100/70 */
+    color: rgb(3 105 161); /* text-sky-700 */
+    font-weight: 600;
+}
+
+/* Chevron Pipeline Styles */
+.chevron-item {
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+    gap: 0.75rem; 
+    height: 4rem;
+    padding: 0 1rem 0 2.5rem; 
+    color: white; 
+    font-weight: 600; 
+    background-color: var(--bg-color);
+}
+.chevron-item:not(:first-child) { 
+    margin-left: -1.5rem; 
+}
+.chevron-item:first-child { 
+    border-top-left-radius: 0.5rem; 
+    border-bottom-left-radius: 0.5rem; 
+    padding-left: 1.5rem; 
+}
+.chevron-item:last-child { 
+    border-top-right-radius: 0.5rem; 
+    border-bottom-right-radius: 0.5rem; 
+    padding-right: 1.5rem; 
+}
+.chevron-item:not(:last-child)::after {
+    content: ''; 
+    position: absolute; 
+    right: -1.5rem; 
+    top: 0; 
+    width: 0; 
+    height: 0;
+    border-top: 2rem solid transparent; 
+    border-bottom: 2rem solid transparent; 
+    border-left: 1.5rem solid var(--bg-color); 
+    z-index: 10;
+}
+
+/* Tab Styling */
+.tab-button {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    color: #4B5563; /* text-gray-600 */
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.tab-button.active {
+    color: #2563EB; /* text-blue-600 */
+    font-weight: 600;
+    border-bottom-color: #2563EB; /* border-blue-600 */
+}
+.tab-button:hover:not(.active) {
+    background-color: #F3F4F6; /* bg-gray-100 */
+}
+.tab-content { 
+    display: none; 
+}
+.tab-content.active { 
+    display: block; 
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chevron-item {
+        font-size: 0.875rem;
+        padding: 0 0.75rem 0 2rem;
+    }
+    
+    .chevron-item:first-child {
+        padding-left: 1rem;
+    }
+    
+    .chevron-item:last-child {
+        padding-right: 1rem;
+    }
+}
+
+/* Utility Classes */
+.transition-colors {
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Loading States */
+.loading-spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}

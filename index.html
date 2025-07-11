@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Copy head section from base template -->
+    <title>Navigator - Home Dashboard</title>
+</head>
+<body>
+    <!-- Copy body structure from base template -->
+    
+    <script>
+        // Page-specific JavaScript for home dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load shared components first
+            const sidebarContainer = document.getElementById('sidebar-container');
+            const sidebarHTML = await ComponentLoader.loadSidebar();
+            sidebarContainer.innerHTML = sidebarHTML;
+            
+            const headerContainer = document.getElementById('header-container');
+            const headerHTML = await ComponentLoader.loadHeader();
+            headerContainer.innerHTML = headerHTML;
+            
+            // Then load your home dashboard content
+            loadHomeDashboard();
+            
+            // Update navigation
+            setTimeout(() => {
+                Navigation.updateHeaderTitle();
+                Navigation.updateCompanySelector();
+                Navigation.updateActiveNavigation();
+            }, 100);
+        });
+        
+        function loadHomeDashboard() {
+            // Your home dashboard logic here
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+                <h2>Welcome to Navigator</h2>
+                <p>Home dashboard content goes here...</p>
+            `;
+        }
+    </script>
+</body>
+</html>
