@@ -1,40 +1,8 @@
-// js/shared.js - Shared utilities and state management
+// js/shared.js - Shared utilities, state, component loading, and navigation
 
-// Global state management
-const NavigatorState = {
-    // Get current selected company from localStorage or URL params
-    getSelectedCompany() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlCompany = urlParams.get('company');
-        if (urlCompany) {
-            localStorage.setItem('selectedCompany', urlCompany);
-            return urlCompany;
-        }
-        return localStorage.getItem('selectedCompany') || 'all';
-    },
-
-    // Set selected company and update localStorage
-    setSelectedCompany(companyId) {
-        localStorage.setItem('selectedCompany', companyId);
-        // Update URL without page reload
-        const url = new URL(window.location);
-        if (companyId === 'all') {
-            url.searchParams.delete('company');
-        } else {
-            url.searchParams.set('company', companyId);
-        }
-        window.history.pushState({}, '', url);
-    },
-
-    // Get current page from URL
-    getCurrentPage() {
-        const path = window.location.pathname;
-        const page = path.split('/').pop().replace('.html', '') || 'index';
-        return page === 'index' ? 'home' : page;
-    }
-};
-
-// Component loader utility
+// =================================================================
+// COMPONENT LOADER
+// =================================================================
 const ComponentLoader = {
     async loadComponent(path) {
         try {
@@ -43,86 +11,98 @@ const ComponentLoader = {
             return await response.text();
         } catch (error) {
             console.error('Error loading component:', error);
-            return `<div class="text-red-500">Error loading component: ${path}</div>`;
+            return `<div class="text-red-500">Error: ${path} could not be loaded.</div>`;
         }
     },
-
-    async loadHeader() {
-        const headerHTML = await this.loadComponent('components/header.html');
-        return headerHTML;
-    },
-
-    async loadSidebar() {
-        const sidebarHTML = await this.loadComponent('components/sidebar.html');
-        return sidebarHTML;
-    }
+    async loadHeader() { return this.loadComponent('components/header.html'); },
+    async loadSidebar() { return this.loadComponent('components/sidebar.html'); }
 };
 
-// Navigation utilities
+// A helper to load all shared components and initialize navigation
+async function loadSharedComponents() {
+    const sidebarContainer = document.getElementById('sidebar-container');
+    const headerContainer = document.getElementById('header-container');
+    
+    if (sidebarContainer) {
+        sidebarContainer.innerHTML = await ComponentLoader.loadSidebar();
+    }
+    if (headerContainer) {
+        headerContainer.innerHTML = await ComponentLoader.loadHeader();
+    }
+    // Once loaded, initialize navigation elements
+    Navigation.updateAll();
+}
+
+
+// =================================================================
+// NAVIGATION
+// =================================================================
 const Navigation = {
-    // Update header title based on current page and company
+    getCurrentPage() {
+        const path = window.location.pathname;
+        const pageName = path.split('/').pop().replace('.html', '');
+        return pageName === '' ? 'index' : pageName;
+    },
+
     updateHeaderTitle() {
         const titleElement = document.getElementById('header-title');
         if (!titleElement) return;
-
-        const currentPage = NavigatorState.getCurrentPage();
-        const selectedCompany = NavigatorState.getSelectedCompany();
+        const page = this.getCurrentPage();
+        const state = loadState(); // Assumes state.js is loaded
         
         let title = 'Dashboard';
-        switch(currentPage) {
-            case 'home': title = 'Portfolio Overview'; break;
-            case 'portco': 
-                title = selectedCompany === 'techflow-solutions' ? 'TechFlow Solutions' :
-                        selectedCompany === 'cloudvantage' ? 'CloudVantage' : 'Portfolio Company';
-                break;
-            case 'aria': title = 'Aria AI Assistant'; break;
-            case 'workspace': title = 'Due Diligence Workspace'; break;
-            case 'modeling': title = 'Financial Modeling'; break;
-        }
+        if (page === 'index') title = 'Portfolio Overview';
+        if (page === 'portco') title = state.selectedCompanyId === 'techflow-solutions' ? 'TechFlow Solutions' : 'CloudVantage';
+        if (page === 'aria') title = 'Aria AI Assistant';
+        if (page === 'workspace') title = 'Diligence Workspace';
+        if (page === 'modeling') title = 'Capability Modeling';
         
         titleElement.textContent = title;
     },
 
-    // Update company selector
     updateCompanySelector() {
         const selector = document.getElementById('company-selector');
         if (!selector) return;
-
-        const selectedCompany = NavigatorState.getSelectedCompany();
-        selector.value = selectedCompany;
-
-        // Add change event listener
-        selector.addEventListener('change', (e) => {
-            NavigatorState.setSelectedCompany(e.target.value);
+        selector.value = loadState().selectedCompanyId;
+        
+        // This event listener should only be added once.
+        // A better approach is to add it in each page's JS file.
+        selector.onchange = (e) => {
+            let state = loadState();
+            state.selectedCompanyId = e.target.value;
+            saveState(state);
             
-            // Redirect to appropriate page based on selection
             if (e.target.value === 'all') {
                 window.location.href = 'index.html';
             } else {
                 window.location.href = `portco.html?company=${e.target.value}`;
             }
-        });
+        };
     },
 
-    // Highlight active navigation item
     updateActiveNavigation() {
-        const currentPage = NavigatorState.getCurrentPage();
+        const currentPage = this.getCurrentPage().replace('index', 'home');
         const navLinks = document.querySelectorAll('.nav-link');
-        
         navLinks.forEach(link => {
             link.classList.remove('active');
-            const linkPage = link.getAttribute('data-page');
-            if (linkPage === currentPage) {
+            if (link.getAttribute('data-page') === currentPage) {
                 link.classList.add('active');
             }
         });
+    },
+    
+    updateAll() {
+        this.updateHeaderTitle();
+        this.updateCompanySelector();
+        this.updateActiveNavigation();
     }
 };
 
-// Common utility functions
+// =================================================================
+// UTILITIES (Functions from original file)
+// =================================================================
 const Utils = {
-    // Typewriter effect for text animation
-    typewriter(element, text, callback, speed = 10) {
+    typewriter(element, text, callback) {
         let i = 0;
         element.innerHTML = "";
         const timer = setInterval(() => {
@@ -133,92 +113,42 @@ const Utils = {
                 clearInterval(timer);
                 if (callback) callback();
             }
-        }, speed);
+        }, 10);
     },
 
-    // Format currency
-    formatCurrency(amount) {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(amount);
-    },
-
-    // Format large numbers (e.g., 1000000 -> 1M)
-    formatLargeNumber(num) {
-        if (num >= 1000000) {
-            return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    generateScenario(capabilityId, state, capabilities, capabilityScenarios) {
+        const capability = capabilities.find(c => c.id === capabilityId);
+        const { current, target } = state.modeling.assessmentData[capabilityId];
+        if (target <= current) return { id: capabilityId, name: capability.name, from: current, to: target, actions: [], insight: "Target state is not higher than current state." };
+        
+        let combinedActions = [], combinedInsights = [];
+        for (let level = current; level < target; level++) {
+            const step = capabilityScenarios[capabilityId]?.[level]?.[level + 1];
+            if (step) { 
+                combinedActions.push(...step.actions); 
+                combinedInsights.push(step.insight); 
+            }
         }
-        if (num >= 1000) {
-            return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        return { id: capabilityId, name: capability.name, from: current, to: target, actions: combinedActions, insight: combinedInsights.join(' ') };
+    },
+
+    async generatePDF(elementId) {
+        const { jsPDF } = window.jspdf;
+        const reportElement = document.getElementById(elementId);
+        if (!reportElement) { 
+            console.error("PDF export element not found!"); 
+            return; 
         }
-        return num.toString();
-    },
-
-    // Debounce function for performance
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    },
-
-    // Show loading state
-    showLoading(element, message = 'Loading...') {
-        element.innerHTML = `
-            <div class="flex items-center justify-center py-8">
-                <div class="loading-spinner mr-3"></div>
-                <span class="text-gray-600">${message}</span>
-            </div>
-        `;
+        const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+        
+        const canvas = await html2canvas(reportElement, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+        
+        const imgProps = doc.getImageProperties(imgData);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        
+        doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        doc.save(`Diligence_Report_${new Date().toISOString().slice(0,10)}.pdf`);
     }
 };
-
-// Tab management
-const TabManager = {
-    // Initialize tab functionality for a container
-    initTabs(container) {
-        const tabButtons = container.querySelectorAll('[data-tab-group] .tab-button');
-        const tabContents = container.querySelectorAll('[data-tab-group] .tab-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabGroup = button.getAttribute('data-tab-group');
-                const tabName = button.getAttribute('data-tab-name');
-
-                // Remove active class from all buttons and contents in this group
-                container.querySelectorAll(`[data-tab-group="${tabGroup}"].tab-button`).forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                container.querySelectorAll(`[data-tab-group="${tabGroup}"].tab-content`).forEach(content => {
-                    content.classList.remove('active');
-                });
-
-                // Add active class to clicked button and corresponding content
-                button.classList.add('active');
-                const targetContent = container.querySelector(`[data-tab-group="${tabGroup}"][data-tab-name="${tabName}"].tab-content`);
-                if (targetContent) {
-                    targetContent.classList.add('active');
-                }
-            });
-        });
-    }
-};
-
-// Initialize common functionality when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Update navigation state
-    Navigation.updateHeaderTitle();
-    Navigation.updateCompanySelector();
-    Navigation.updateActiveNavigation();
-
-    // Initialize tabs on the page
-    TabManager.initTabs(document);
-});
