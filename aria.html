@@ -1,528 +1,68 @@
-        function renderAriaInterface() {
-            const currentPrompts = suggestedPrompts[ariaState.selectedCompany] || suggestedPrompts.default;
-            
-            return `
-                <div class="max-w-4xl mx-auto space-y-6">
-                    <!-- Company Context Banner -->
-                    ${ariaState.selectedCompany !== 'all' ? `
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">A</div>
-                                <div>
-                                    <h3 class="font-semibold text-blue-800">
-                                        Aria - ${ariaState.selectedCompany === 'techflow-solutions' ? 'TechFlow Solutions' : 'CloudVantage'} Context
-                                    </h3>
-                                    <p class="text-sm text-blue-600">
-                                        I have access to all ${ariaState.selectedCompany === 'techflow-solutions' ? 'due diligence data and anomaly reports' : 'growth metrics and operational data'} for this company.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    ` : `
-                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">A</div>
-                                <div>
-                                    <h3 class="font-semibold text-gray-800">Aria - Portfolio Overview</h3>
-                                    <p class="text-sm text-gray-600">
-                                        I can help with portfolio-wide analysis, individual company deep dives, and strategic recommendations.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    `}
-
-                    <!-- Workstream Cards for TechFlow -->
-                    ${ariaState.selectedCompany === 'techflow-solutions' && ariaState.conversation.length === 0 ? `
-                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
-                            ${renderTechFlowWorkstreamCards()}
-                        </div>
-                    ` : ''}
-
-                    <!-- Conversation Area -->
-                    <div id="conversation-area" class="space-y-4">
-                        ${ariaState.conversation.length === 0 ? renderWelcomeMessage() : renderConversation()}
-                    </div>
-
-                    <!-- Suggested Prompts -->
-                    <div class="bg-white border border-gray-200 rounded-lg p-6">
-                        <h4 class="font-semibold text-gray-800 mb-4">
-                            ${ariaState.conversation.length === 0 ? 'Get Started' : 'Suggested Follow-ups'}
-                        </h4>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            ${currentPrompts.map(prompt => `
-                                <button onclick="askAria('${prompt.id}')" 
-                                        class="text-sm bg-blue-100 text-blue-800 px-3 py-2 rounded-full hover:bg-blue-200 transition-colors">
-                                    ${prompt.text}
-                                </button>
-                            `).join('')}
-                        </div>
-                        
-                        <!-- Custom Input -->
-                        <div class="relative">
-                            <textarea id="custom-prompt" 
-                                      class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none" 
-                                      rows="3" 
-                                      placeholder="Ask Aria anything about your portfolio..."></textarea>
-                            <div class="absolute bottom-3 right-3 flex gap-2">
-                                <button onclick="clearConversation()" 
-                                        class="bg-gray-200 text-gray-800 font-semibold py-1 px-3 rounded-md hover:bg-gray<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navigator - Aria AI Assistant</title>
+    <title>Navigator - Aria</title>
     
+    <!-- In a real setup, you would link to your shared CSS file -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Link to your actual CSS file -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="min-h-screen w-full flex">
-        <!-- Sidebar will load here -->
-        <div id="sidebar-container">Loading sidebar...</div>
-        
-        <!-- Main content area -->
+        <!-- The sidebar would be loaded from components/sidebar.html -->
+        <nav id="sidebar" class="w-72 bg-white flex-shrink-0 border-r border-gray-200 flex flex-col">        
+            <div class="flex items-center justify-start h-20 border-b border-gray-200 px-6">
+                <img src="Navigator lock up_Veridian_25.png" alt="Navigator Logo" class="h-10"/>
+            </div>
+            <div class="p-4 flex-grow">
+                <!-- Sidebar Menu would be dynamically populated by a shared script -->
+                <ul>
+                    <li><a href="index.html" class="flex items-center p-3 my-1 rounded-lg text-gray-700 hover:bg-gray-100">Home</a></li>
+                    <li><a href="portco.html" class="flex items-center p-3 my-1 rounded-lg text-gray-700 hover:bg-gray-100">PortCo</a></li>
+                    <li><a href="aria.html" class="flex items-center p-3 my-1 rounded-lg bg-sky-100/70 text-sky-700 font-semibold">Aria</a></li>
+                    <li><a href="workspace.html" class="flex items-center p-3 my-1 rounded-lg text-gray-700 hover:bg-gray-100">Workspace</a></li>
+                    <li><a href="modeling.html" class="flex items-center p-3 my-1 rounded-lg text-gray-700 hover:bg-gray-100">Modeling</a></li>
+                </ul>
+            </div>
+        </nav>
+
         <div class="flex-1 flex flex-col">
-            <!-- Header will load here -->
-            <div id="header-container">Loading header...</div>
+            <!-- The header would be loaded from components/header.html -->
+            <header class="h-20 bg-white flex items-center justify-between px-8 border-b border-gray-200 flex-shrink-0">
+                <div><h1 id="header-title" class="text-2xl font-bold text-gray-800">Aria</h1></div>
+                <div id="header-actions" class="flex items-center gap-4">
+                     <select id="company-selector" class="px-4 py-2 text-sm font-semibold border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <option value="all">All Portfolio Companies</option>
+                        <option value="techflow-solutions" selected>TechFlow Solutions</option>
+                        <option value="cloudvantage">CloudVantage</option>
+                    </select>
+                </div>
+            </header>
             
-            <!-- Page content -->
+            <!-- Main Content for the Aria page -->
             <main id="main-content" class="flex-1 p-6 sm:p-8 overflow-y-auto">
+                <!-- Content will be dynamically generated by aria.js -->
                 <div class="flex items-center justify-center h-full">
-                    <div class="text-center">
-                        <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mx-auto mb-4">A</div>
-                        <h3 class="mt-2 text-lg font-medium text-gray-900">Loading Aria...</h3>
-                        <p class="mt-1 text-sm text-gray-500">Please wait while we initialize the AI assistant.</p>
-                    </div>
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- Load shared JavaScript FIRST -->
-    <script src="js/shared.js"></script>
-    
-    <script>
-        // Aria state management
-        let ariaState = {
-            selectedCompany: 'all',
-            conversation: [],
-            isThinking: false,
-            context: 'default'
-        };
-
-        // Sample data and suggested prompts
-        const suggestedPrompts = {
-            'default': [
-                { id: 'techflow-summary', text: "Summarize the key risks for TechFlow Solutions" },
-                { id: 'cloudvantage-growth', text: "What are the top 3 growth opportunities for CloudVantage?" },
-                { id: 'portfolio-ebitda', text: "How can I improve portfolio-wide EBITDA margins?" }
-            ],
-            'techflow-solutions': [
-                { id: 'tf-anomalies', text: "Provide an overview of the current registered anomalies" },
-                { id: 'tf-competitive', text: "Summarize the competitive landscape and TechFlow's position" },
-                { id: 'tf-churn', text: "What are the primary drivers of customer churn?" },
-                { id: 'tf-revenue-quality', text: "Show the Quality of Revenue report" }
-            ],
-            'cloudvantage': [
-                { id: 'cv-renewals', text: "Process the renewals for the NewCo acquisition customers" },
-                { id: 'cv-sales-comp', text: "Analyze the current sales compensation plan for the Enterprise team" },
-                { id: 'cv-pipeline-risk', text: "What are the biggest risks in the current sales pipeline?" },
-                { id: 'cv-marketing-roi', text: "Analyze the ROI of the recent ABM campaign" }
-            ]
-        };
-
-        // Sample responses for demonstration
-        const sampleResponses = {
-            'techflow-summary': {
-                title: "TechFlow Solutions Risk Summary",
-                content: `
-                    <div class="space-y-4">
-                        <div class="bg-red-50 border-l-4 border-red-500 p-4">
-                            <h4 class="font-semibold text-red-800">Critical Risk: ARR Composition</h4>
-                            <p class="text-red-700 text-sm mt-1">Only 59% of reported $12M ARR represents true committed subscription revenue. The remainder consists of projected perpetual revenue and maintenance fees.</p>
-                        </div>
-                        <div class="bg-orange-50 border-l-4 border-orange-500 p-4">
-                            <h4 class="font-semibold text-orange-800">High Risk: Product Launch Failures</h4>
-                            <p class="text-orange-700 text-sm mt-1">Three recent product launches generated zero revenue despite $3.2M R&D investment, indicating potential product-market fit issues.</p>
-                        </div>
-                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
-                            <h4 class="font-semibold text-yellow-800">Medium Risk: Customer Concentration</h4>
-                            <p class="text-yellow-700 text-sm mt-1">Top 2 customers account for 28% of total ARR, with Global FinCorp contract up for renewal in 4 months.</p>
-                        </div>
-                    </div>
-                `
-            },
-            'cloudvantage-growth': {
-                title: "CloudVantage Growth Opportunities",
-                content: `
-                    <div class="space-y-4">
-                        <div class="bg-green-50 border-l-4 border-green-500 p-4">
-                            <h4 class="font-semibold text-green-800">1. Enterprise Expansion</h4>
-                            <p class="text-green-700 text-sm mt-1">Current NRR of 128% indicates strong expansion potential. Consider dedicated expansion sales team for upselling existing customers.</p>
-                        </div>
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
-                            <h4 class="font-semibold text-blue-800">2. Channel Partner Program</h4>
-                            <p class="text-blue-700 text-sm mt-1">Currently at risk but represents significant opportunity. Focus on co-marketing initiatives and partner enablement.</p>
-                        </div>
-                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4">
-                            <h4 class="font-semibold text-purple-800">3. AI Feature Acceleration</h4>
-                            <p class="text-purple-700 text-sm mt-1">Despite current delays, AI features represent major differentiation opportunity. Consider external development partnership.</p>
-                        </div>
-                    </div>
-                `
-            },
-            'portfolio-ebitda': {
-                title: "Portfolio EBITDA Improvement Strategy",
-                content: `
-                    <div class="space-y-4">
-                        <div class="bg-white border rounded-lg p-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Revenue Optimization</h4>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                <li>• Implement dynamic pricing across portfolio companies</li>
-                                <li>• Focus on higher-margin service offerings</li>
-                                <li>• Accelerate upselling programs</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white border rounded-lg p-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Cost Management</h4>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                <li>• Centralize procurement for 15-20% savings</li>
-                                <li>• Optimize cloud infrastructure costs</li>
-                                <li>• Implement shared services model</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white border rounded-lg p-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Operational Efficiency</h4>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                <li>• Automate manual processes</li>
-                                <li>• Standardize tech stacks</li>
-                                <li>• Cross-portfolio best practice sharing</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            }
-        };
-
-        // Get selected company from URL or localStorage
-        function getSelectedCompany() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlCompany = urlParams.get('company');
-            if (urlCompany) {
-                localStorage.setItem('selectedCompany', urlCompany);
-                return urlCompany;
-            }
-            return localStorage.getItem('selectedCompany') || 'all';
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Load shared components
-            const sidebarContainer = document.getElementById('sidebar-container');
-            const sidebarHTML = await ComponentLoader.loadSidebar();
-            sidebarContainer.innerHTML = sidebarHTML;
-            
-            const headerContainer = document.getElementById('header-container');
-            const headerHTML = await ComponentLoader.loadHeader();
-            headerContainer.innerHTML = headerHTML;
-            
-            // Update navigation and load Aria interface
-            setTimeout(() => {
-                Navigation.updateHeaderTitle();
-                Navigation.updateCompanySelector();
-                Navigation.updateActiveNavigation();
-                loadAriaInterface();
-            }, 100);
-        });
-
-        function loadAriaInterface() {
-            ariaState.selectedCompany = getSelectedCompany();
-            
-            // Check for context from URL or localStorage
-            const urlParams = new URLSearchParams(window.location.search);
-            const contextFromUrl = urlParams.get('context');
-            const contextFromStorage = localStorage.getItem('ariaContext');
-            
-            if (contextFromUrl) {
-                ariaState.context = contextFromUrl;
-                localStorage.setItem('ariaContext', contextFromUrl);
-                
-                // Auto-trigger specific questions based on context
-                if (contextFromUrl === 'tf-anomalies') {
-                    setTimeout(() => askAria('tf-anomalies'), 1000);
-                }
-            } else if (contextFromStorage) {
-                ariaState.context = contextFromStorage;
-            }
-            
-            const mainContent = document.getElementById('main-content');
-            
-            // Update header title
-            const headerTitle = document.getElementById('header-title');
-            headerTitle.textContent = 'Aria AI Assistant';
-            
-            mainContent.innerHTML = renderAriaInterface();
-            initializeAriaInteractions();
-        }
-
-        function renderAriaInterface() {
-            const currentPrompts = suggestedPrompts[ariaState.selectedCompany] || suggestedPrompts.default;
-            
-            return `
-                <div class="max-w-4xl mx-auto space-y-6">
-                    <!-- Company Context Banner -->
-                    ${ariaState.selectedCompany !== 'all' ? `
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">A</div>
-                                <div>
-                                    <h3 class="font-semibold text-blue-800">
-                                        Aria - ${ariaState.selectedCompany === 'techflow-solutions' ? 'TechFlow Solutions' : 'CloudVantage'} Context
-                                    </h3>
-                                    <p class="text-sm text-blue-600">
-                                        I have access to all ${ariaState.selectedCompany === 'techflow-solutions' ? 'due diligence data and anomaly reports' : 'growth metrics and operational data'} for this company.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    ` : `
-                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">A</div>
-                                <div>
-                                    <h3 class="font-semibold text-gray-800">Aria - Portfolio Overview</h3>
-                                    <p class="text-sm text-gray-600">
-                                        I can help with portfolio-wide analysis, individual company deep dives, and strategic recommendations.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    `}
-
-                    <!-- Conversation Area -->
-                    <div id="conversation-area" class="space-y-4">
-                        ${ariaState.conversation.length === 0 ? renderWelcomeMessage() : renderConversation()}
-                    </div>
-
-                    <!-- Suggested Prompts -->
-                    <div class="bg-white border border-gray-200 rounded-lg p-6">
-                        <h4 class="font-semibold text-gray-800 mb-4">
-                            ${ariaState.conversation.length === 0 ? 'Get Started' : 'Suggested Follow-ups'}
-                        </h4>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            ${currentPrompts.map(prompt => `
-                                <button onclick="askAria('${prompt.id}')" 
-                                        class="text-sm bg-blue-100 text-blue-800 px-3 py-2 rounded-full hover:bg-blue-200 transition-colors">
-                                    ${prompt.text}
-                                </button>
-                            `).join('')}
-                        </div>
-                        
-                        <!-- Custom Input -->
-                        <div class="relative">
-                            <textarea id="custom-prompt" 
-                                      class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none" 
-                                      rows="3" 
-                                      placeholder="Ask Aria anything about your portfolio..."></textarea>
-                            <div class="absolute bottom-3 right-3 flex gap-2">
-                                <button onclick="clearConversation()" 
-                                        class="bg-gray-200 text-gray-800 font-semibold py-1 px-3 rounded-md hover:bg-gray-300 transition-colors text-sm">
-                                    Clear
-                                </button>
-                                <button onclick="askCustomQuestion()" 
-                                        class="bg-blue-600 text-white font-semibold py-1 px-3 rounded-md hover:bg-blue-700 transition-colors text-sm">
-                                    Ask Aria
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderWelcomeMessage() {
-            return `
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">A</div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Welcome to Aria</h3>
-                    <p class="text-gray-600 mb-6">Your AI assistant for portfolio analysis and strategic insights</p>
-                    <div class="bg-gray-50 rounded-lg p-4 text-left max-w-2xl mx-auto">
-                        <h4 class="font-semibold text-gray-800 mb-2">I can help you with:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            <li>• Due diligence analysis and anomaly detection</li>
-                            <li>• Company performance reviews and KPI analysis</li>
-                            <li>• Strategic recommendations and growth opportunities</li>
-                            <li>• Portfolio-wide optimization and benchmarking</li>
-                            <li>• Financial modeling and scenario planning</li>
-                        </ul>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderConversation() {
-            return ariaState.conversation.map(message => {
-                if (message.type === 'user') {
-                    return `
-                        <div class="flex justify-end">
-                            <div class="bg-blue-600 text-white rounded-lg p-4 max-w-2xl">
-                                <p>${message.content}</p>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    return `
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
-                            <div class="bg-white border border-gray-200 rounded-lg p-4 flex-grow">
-                                <h4 class="font-semibold text-gray-800 mb-2">${message.title}</h4>
-                                ${message.content}
-                            </div>
-                        </div>
-                    `;
-                }
-            }).join('');
-        }
-
-        function showTypingIndicator() {
-            const conversationArea = document.getElementById('conversation-area');
-            const typingHtml = `
-                <div id="typing-indicator" class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold flex-shrink-0">A</div>
-                    <div class="bg-white border border-gray-200 rounded-lg p-4 flex-grow">
-                        <div class="flex items-center gap-2">
-                            <span class="text-gray-600">Aria is thinking</span>
-                            <div class="flex gap-1">
-                                <div class="w-2 h-2 rounded-full bg-gray-400 thinking-dot dot1"></div>
-                                <div class="w-2 h-2 rounded-full bg-gray-400 thinking-dot dot2"></div>
-                                <div class="w-2 h-2 rounded-full bg-gray-400 thinking-dot dot3"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            conversationArea.innerHTML += typingHtml;
-            conversationArea.scrollTop = conversationArea.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const typingIndicator = document.getElementById('typing-indicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
-            }
-        }
-
-        function askAria(promptId) {
-            const currentPrompts = suggestedPrompts[ariaState.selectedCompany] || suggestedPrompts.default;
-            const prompt = currentPrompts.find(p => p.id === promptId);
-            
-            if (prompt) {
-                processQuestion(prompt.text, promptId);
-            }
-        }
-
-        function askCustomQuestion() {
-            const customPrompt = document.getElementById('custom-prompt');
-            const question = customPrompt.value.trim();
-            
-            if (question) {
-                processQuestion(question);
-                customPrompt.value = '';
-            }
-        }
-
-        function processQuestion(question, promptId = null) {
-            // Add user message to conversation
-            ariaState.conversation.push({
-                type: 'user',
-                content: question
-            });
-
-            // Re-render conversation with user message
-            const conversationArea = document.getElementById('conversation-area');
-            conversationArea.innerHTML = renderConversation();
-            
-            // Show typing indicator
-            showTypingIndicator();
-
-            // Simulate API call delay
-            setTimeout(() => {
-                removeTypingIndicator();
-                
-                // Get response (in real app, this would be an API call)
-                const response = getAriaResponse(question, promptId);
-                
-                // Add Aria response to conversation
-                ariaState.conversation.push({
-                    type: 'aria',
-                    title: response.title,
-                    content: response.content
-                });
-
-                // Re-render conversation
-                conversationArea.innerHTML = renderConversation();
-                conversationArea.scrollTop = conversationArea.scrollHeight;
-
-            }, 1500 + Math.random() * 1000); // Random delay between 1.5-2.5 seconds
-        }
-
-        function getAriaResponse(question, promptId) {
-            // In a real app, this would make an API call to your AI backend
-            // For demo purposes, we'll return sample responses
-            
-            if (promptId && sampleResponses[promptId]) {
-                return sampleResponses[promptId];
-            }
-            
-            // Default response for custom questions
-            return {
-                title: "Analysis Complete",
-                content: `
-                    <div class="space-y-3">
-                        <p class="text-gray-700">I've analyzed your question: "${question}"</p>
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3">
-                            <p class="text-sm text-blue-700">
-                                This is a demonstration response. In the full system, I would provide detailed analysis based on your portfolio data, market intelligence, and strategic frameworks.
-                            </p>
-                        </div>
-                        <p class="text-sm text-gray-500">
-                            Would you like me to elaborate on any specific aspect of this analysis?
-                        </p>
-                    </div>
-                `
-            };
-        }
-
-        function clearConversation() {
-            ariaState.conversation = [];
-            loadAriaInterface();
-        }
-
-        function initializeAriaInteractions() {
-            // Add enter key support for custom prompt
-            const customPrompt = document.getElementById('custom-prompt');
-            customPrompt.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                    askCustomQuestion();
-                }
-            });
-        }
-
-        // Listen for company selector changes
-        document.addEventListener('change', (e) => {
-            if (e.target.id === 'company-selector') {
-                const newCompany = e.target.value;
-                if (newCompany === 'all') {
-                    window.location.href = 'aria.html';
-                } else {
-                    window.location.href = `aria.html?company=${newCompany}`;
-                }
-            }
-        });
-    </script>
+    <!-- 
+      In a real multi-page application, you would have shared scripts for data, state, and utilities.
+      For this example, we are focusing on the aria-specific logic.
+    -->
+    <!-- <script src="js/data.js"></script> -->
+    <!-- <script src="js/state.js"></script> -->
+    <!-- <script src="js/utils.js"></script> -->
+    <script src="js/aria.js"></script>
 </body>
 </html>
