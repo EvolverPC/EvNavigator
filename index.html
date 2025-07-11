@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Copy head section from base template -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navigator - Home Dashboard</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Copy body structure from base template -->
+    <div class="min-h-screen w-full flex">
+        <!-- Sidebar will load here -->
+        <div id="sidebar-container">Loading sidebar...</div>
+        
+        <!-- Main content area -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header will load here -->
+            <div id="header-container">Loading header...</div>
+            
+            <!-- Page content -->
+            <main id="main-content" class="flex-1 p-6 sm:p-8 overflow-y-auto">
+                <h2>Welcome to Navigator</h2>
+                <p>Home dashboard will load here...</p>
+            </main>
+        </div>
+    </div>
+
+    <!-- Load shared JavaScript FIRST -->
+    <script src="js/shared.js"></script>
     
     <script>
-        // Page-specific JavaScript for home dashboard
         document.addEventListener('DOMContentLoaded', async () => {
-            // Load shared components first
+            // Load components
             const sidebarContainer = document.getElementById('sidebar-container');
             const sidebarHTML = await ComponentLoader.loadSidebar();
             sidebarContainer.innerHTML = sidebarHTML;
@@ -19,23 +44,15 @@
             const headerHTML = await ComponentLoader.loadHeader();
             headerContainer.innerHTML = headerHTML;
             
-            // Then load your home dashboard content
+            // Load home dashboard content
             loadHomeDashboard();
-            
-            // Update navigation
-            setTimeout(() => {
-                Navigation.updateHeaderTitle();
-                Navigation.updateCompanySelector();
-                Navigation.updateActiveNavigation();
-            }, 100);
         });
         
         function loadHomeDashboard() {
-            // Your home dashboard logic here
             const mainContent = document.getElementById('main-content');
             mainContent.innerHTML = `
-                <h2>Welcome to Navigator</h2>
-                <p>Home dashboard content goes here...</p>
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Portfolio Overview</h2>
+                <p>This will become the full home dashboard content...</p>
             `;
         }
     </script>
