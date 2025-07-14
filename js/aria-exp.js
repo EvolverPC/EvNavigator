@@ -1,56 +1,16 @@
 // js/aria-exp.js - Logic for the Experimental Aria AI Assistant page
 
-// --- DATA SCOPED FOR THIS EXPERIMENT ---
-const techflow_workstreamData_exp = [
-    { 
-        id: 'business', 
-        title: 'Business & Strategy', 
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-blue-600"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>`, 
-        cards: [{label: "Market Size (TAM)", value: "$5.2B"}, {label: "Market CAGR", value: "18%"}, {label: "Competitive Moat", value: "Medium"}],
-        suggestedPrompts: ["Summarize the competitive landscape and TechFlow's position.", "What are the key market trends impacting the company?", "Analyze the credibility of the 5-year strategic plan."],
-        suggestedActions: [
-            { text: "Draft a 'Go-to-Market' slide for the IC memo.", description: "Generate a pre-formatted slide summarizing the GTM strategy for your Investment Committee memo." },
-            { text: "Prioritize 'Platform Consolidation' risk in the 100-day plan.", description: "Add this key risk to the 100-day plan to ensure it is addressed post-close." },
-            { text: "Generate key questions for the CEO regarding the strategic plan.", description: "Create a list of targeted questions to challenge the assumptions in the management's plan." }
-        ]
+// --- DATA MAPPING ---
+const companyDataMap = {
+    'techflow-solutions': {
+        workstreamData: techflow_workstreamData,
+        ariaResponses: techflow_ariaResponses
     },
-    { 
-        id: 'commercial', 
-        title: 'Commercial & Customer', 
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-teal-600"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`, 
-        cards: [{label: "LTV:CAC Ratio", value: "3.1x"}, {label: "Net Revenue Retention", value: "105%"}, {label: "Logo Churn", value: "18%"}],
-        suggestedPrompts: ["Show the Quality of Revenue report.", "Analyze the efficiency of the sales and marketing funnel.", "Identify the top 10 customers by revenue and any concentration risks."],
-        suggestedActions: [
-            { text: "Generate a pricing model with 'Good-Better-Best' tiers.", description: "Create a draft pricing model to improve monetization and expansion revenue." },
-            { text: "Draft an email to the Head of Sales about the MQL-to-SQL drop-off.", description: "Generate a pre-written email to kick off a conversation about funnel efficiency." },
-            { text: "Add 'Customer Concentration' as a key risk to the workspace.", description: "Flag this critical issue in your workspace to track it as part of the diligence process." }
-        ]
-    },
-    { 
-        id: 'tech', 
-        title: 'Technology & Operations', 
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-indigo-600"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" x2="12" y1="2" y2="22"/></svg>`, 
-        cards: [{label: "Technical Debt Score", value: "High"}, {label: "Core App Uptime", value: "99.8%"}, {label: "Dev Velocity", value: "Low"}],
-        suggestedPrompts: ["Summarize the key architectural risks and their potential cost to remediate.", "How does the R&D team's velocity compare to industry benchmarks?", "What is the plan for migrating off the legacy monolithic architecture?"],
-        suggestedActions: [
-            { text: "Estimate the cost and timeline for a monolith-to-microservices migration.", description: "Generate a high-level estimate for the cost and timeline of this critical project." },
-            { text: "Generate a job description for a 'Lead DevOps Engineer'.", description: "Create a job description to hire the talent needed to improve developer velocity." },
-            { text: "Draft an IC memo slide on technical debt.", description: "Summarize the technical debt issue and mitigation plan for the Investment Committee." }
-        ]
-    },
-    { 
-        id: 'financial', 
-        title: 'Financial & Risk', 
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-red-600"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`, 
-        cards: [{label: "Gross Margin", value: "72%"}, {label: "Monthly Burn Rate", value: "$450K"}, {label: "Cash Runway", value: "11 mos"}],
-        suggestedPrompts: ["Provide an overview of the current registered anomalies.", "What are the key risks to achieving the 2025 forecast?", "Analyze the quality of earnings and identify any one-time adjustments."],
-        suggestedActions: [
-            { text: "Draft an email to the CFO requesting clarification on revenue recognition policies.", description: "Generate a pre-written email to the CFO to get clarity on a key accounting policy." },
-            { text: "Request all contracts with non-standard terms be uploaded to the data room.", description: "Log a formal request to the deal team to gather critical legal documents." },
-            { text: "Build the 'Base Case' financial model.", description: "Create a more realistic financial model based on diligence findings, not just management's view." }
-        ]
+    'cloudvantage': {
+        workstreamData: cloudvantage_workstreamData,
+        ariaResponses: cloudvantage_ariaResponses
     }
-];
+};
 
 // --- PAGE INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
@@ -60,8 +20,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function initializeAriaExpPage() {
+    const params = new URLSearchParams(window.location.search);
+    const companyId = params.get('company') || 'techflow-solutions';
+
     let state = loadState();
-    state.selectedCompanyId = 'techflow-solutions';
+    state.selectedCompanyId = companyId;
     state.techflowAria.activeWorkstream = null;
     state.techflowAria.minorObservationsExpanded = false;
     saveState(state);
@@ -71,8 +34,7 @@ function initializeAriaExpPage() {
     if (ariaView) {
         ariaView.innerHTML = `
             <div id="aria-conversation-container" class="space-y-6">
-                ${renderInitialWorkstreamCards()}
-                ${getSimplePromptBoxHTML()}
+                ${renderInitialWorkstreamCards(companyId)}
             </div>
         `;
     }
@@ -80,9 +42,10 @@ function initializeAriaExpPage() {
 
 // --- CORE RENDERING FUNCTIONS ---
 
-function renderInitialWorkstreamCards() {
+function renderInitialWorkstreamCards(companyId) {
+    const data = companyDataMap[companyId]?.workstreamData || [];
     return `<div id="workstream-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        ${techflow_workstreamData_exp.map(ws => `
+        ${data.map(ws => `
             <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 flex flex-col">
                 <div class="flex-grow">
                     <div class="flex items-center gap-3"><div class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-gray-100 rounded-lg">${ws.icon}</div><h2 class="text-lg font-bold text-gray-800">${ws.title}</h2></div>
@@ -94,19 +57,14 @@ function renderInitialWorkstreamCards() {
     </div>`;
 }
 
-function getSimplePromptBoxHTML() {
-    const state = loadState();
+function renderSuggestedPrompts(questions) {
+    const promptsHTML = questions.map(q => `<button data-action="run-suggested-prompt" data-question="${q}" class="flex items-center w-full text-left gap-2 text-sm bg-sky-100 text-sky-800 px-3 py-2 rounded-lg hover:bg-sky-200 transition-colors"><span>${q}</span></button>`).join('');
     return `
-        <div id="aria-prompt-container" class="mt-6">
-            <div class="prompt-box-container p-2">
-                <div class="flex items-end gap-2">
-                    <div class="relative">
-                        <button data-action="toggle-settings-modal" class="prompt-action-button p-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-                        </button>
-                        ${renderSettingsModal(state.ariaSettings)}
-                    </div>
-                    <textarea id="aria-prompt-input" class="w-full p-2 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-none bg-gray-50" rows="1" placeholder="Select a workstream above to begin..." disabled></textarea>
+        <div id="suggested-prompts-container" class="mt-6">
+            <div class="p-4 border rounded-lg bg-white">
+                <div class="space-y-2">
+                    <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Suggested Questions</h4>
+                    ${promptsHTML}
                 </div>
             </div>
         </div>
@@ -129,14 +87,19 @@ function getAdvancedPromptBoxHTML(followUpQuestions = []) {
                 </div>
                 ` : ''}
                 <div class="border-t p-2">
-                    <div class="flex items-end gap-2">
-                        <div class="relative">
-                            <button data-action="toggle-settings-modal" class="prompt-action-button p-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></button>
-                            ${renderSettingsModal(state.ariaSettings)}
+                    <div class="flex items-start gap-2" style="min-height: 40px;">
+                        <div class="flex items-center gap-1 pt-1.5">
+                            <button data-action="attach-file" class="prompt-action-button p-2" title="Attach File"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                            <div class="relative">
+                                <button data-action="toggle-settings-modal" class="prompt-action-button p-2" title="Settings"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></button>
+                                ${renderSettingsModal(state.ariaSettings)}
+                            </div>
                         </div>
-                        <textarea id="aria-prompt-input" class="w-full p-2 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 resize-none" rows="1" placeholder="Ask a follow-up..."></textarea>
-                        <button data-action="restart-conversation" class="prompt-action-button p-2" title="Restart Conversation"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></button>
-                        <button class="prompt-send-button flex-shrink-0" data-action="ask-aria"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg></button>
+                        <textarea id="aria-prompt-input" class="w-full p-2 border-none focus:ring-0 resize-none bg-transparent" rows="1" placeholder="Ask a follow-up..."></textarea>
+                        <div class="flex items-center gap-1 pt-1.5">
+                            <button data-action="restart-conversation" class="prompt-action-button p-2" title="Restart Conversation"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></button>
+                            <button class="prompt-send-button flex-shrink-0" data-action="ask-aria" title="Send"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -296,10 +259,13 @@ async function runAriaBuildingSequence(responseElement) {
 function runAriaSequence(promptText) {
     if (!promptText) return;
     let state = loadState();
+    const companyId = state.selectedCompanyId;
+    const companyResponses = companyDataMap[companyId]?.ariaResponses || {};
 
     const conversationContainer = document.getElementById('aria-conversation-container');
     if (!conversationContainer) return;
 
+    document.getElementById('suggested-prompts-container')?.remove();
     document.getElementById('aria-prompt-container')?.remove();
 
     const userPromptHTML = `<div class="bg-white p-4 rounded-lg shadow-sm border"><p class="font-semibold text-gray-500">You</p><p class="text-gray-800">${promptText}</p></div>`;
@@ -311,7 +277,7 @@ function runAriaSequence(promptText) {
     document.getElementById(reasoningId).scrollIntoView({ behavior: 'smooth', block: 'end' });
 
     setTimeout(() => {
-        const responseData = techflow_ariaResponses[promptText] || { id: 'unknown', title: 'Unknown Query', renderFunc: () => `<div class="build-item"><p data-typing-text='I am still learning about "${promptText}". Please try another question.'></p></div>`, followUpQuestions: [] };
+        const responseData = companyResponses[promptText] || { id: 'unknown', title: 'Unknown Query', renderFunc: () => `<div class="build-item"><p data-typing-text='I am still learning about "${promptText}". Please try another question.'></p></div>`, followUpQuestions: [] };
         
         document.getElementById(reasoningId)?.remove();
         const responseId = `response-${responseData.id || Date.now()}`;
@@ -319,7 +285,8 @@ function runAriaSequence(promptText) {
 
         let suggestedActionsHTML = '';
         if (responseData.id !== 'unknown' && state.techflowAria.activeWorkstream) {
-            const workstreamData = techflow_workstreamData_exp.find(w => w.id === state.techflowAria.activeWorkstream);
+            const companyWorkstreamData = companyDataMap[companyId]?.workstreamData || [];
+            const workstreamData = companyWorkstreamData.find(w => w.id === state.techflowAria.activeWorkstream);
             if (workstreamData?.suggestedActions?.length > 0) {
                 const actionsCardsHTML = workstreamData.suggestedActions.map(action => `
                     <button data-action="run-suggested-prompt" data-question="${action.text}" class="build-item w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors">
@@ -380,12 +347,15 @@ function initializeAriaExpEventListeners() {
                 state.techflowAria.activeWorkstream = workstreamId;
                 saveState(state);
                 
-                document.getElementById('workstream-cards-container')?.remove();
-                document.getElementById('aria-prompt-container')?.remove();
-
-                const workstreamData = techflow_workstreamData_exp.find(w => w.id === workstreamId);
-                if (workstreamData?.suggestedPrompts.length > 0) {
-                    runAriaSequence(workstreamData.suggestedPrompts[0]);
+                document.getElementById('suggested-prompts-container')?.remove();
+                
+                const companyWorkstreamData = companyDataMap[state.selectedCompanyId]?.workstreamData || [];
+                const workstreamData = companyWorkstreamData.find(w => w.id === workstreamId);
+                
+                if (workstreamData?.suggestedQuestions.length > 0) {
+                    const conversationContainer = document.getElementById('aria-conversation-container');
+                    conversationContainer.insertAdjacentHTML('beforeend', renderSuggestedPrompts(workstreamData.suggestedQuestions));
+                    document.getElementById('suggested-prompts-container').scrollIntoView({ behavior: 'smooth', block: 'end' });
                 }
                 break;
 
@@ -422,7 +392,7 @@ function initializeAriaExpEventListeners() {
                 const responseId = target.dataset.responseId;
                 if (!responseId) break;
 
-                const allSources = [techflow_anomalies, techflow_minorObservations, ...Object.values(techflow_ariaResponses)];
+                const allSources = [techflow_anomalies, techflow_minorObservations, ...Object.values(techflow_ariaResponses), ...Object.values(cloudvantage_ariaResponses)];
                 const responseData = allSources.flat().find(item => item.id === responseId);
 
                 if (responseData) {
@@ -483,6 +453,14 @@ function initializeAriaExpEventListeners() {
         saveState(state);
         updatePromptContainer(state);
     });
+
+    mainContent.addEventListener('input', e => {
+        const target = e.target;
+        if (target.id === 'aria-prompt-input') {
+            target.style.height = 'auto';
+            target.style.height = (target.scrollHeight) + 'px';
+        }
+    });
 }
 
 function updatePromptContainer(state) {
@@ -491,8 +469,9 @@ function updatePromptContainer(state) {
         const lastResponseBubble = [...document.querySelectorAll('.aria-response-bubble')].pop();
         if (lastResponseBubble) {
             const responseId = lastResponseBubble.id;
-            const responseKey = Object.keys(techflow_ariaResponses).find(key => `response-${techflow_ariaResponses[key].id}` === responseId);
-            const followUpQuestions = responseKey ? techflow_ariaResponses[responseKey].followUpQuestions : [];
+            const companyResponses = companyDataMap[state.selectedCompanyId]?.ariaResponses || {};
+            const responseKey = Object.keys(companyResponses).find(key => `response-${companyResponses[key].id}` === responseId);
+            const followUpQuestions = responseKey ? companyResponses[responseKey].followUpQuestions : [];
             promptContainer.outerHTML = getAdvancedPromptBoxHTML(followUpQuestions);
         } else {
              promptContainer.outerHTML = getAdvancedPromptBoxHTML([]);
