@@ -54,6 +54,7 @@ const Navigation = {
         if (page === 'index') title = 'Portfolio Overview';
         if (page === 'portco') title = state.selectedCompanyId === 'techflow-solutions' ? 'TechFlow Solutions' : 'CloudVantage';
         if (page === 'aria') title = 'Aria AI Assistant';
+        if (page === 'aria-exp') title = 'Aria (Experimental)'; // <-- ADDED
         if (page === 'workspace') title = 'Diligence Workspace';
         if (page === 'modeling') title = 'Capability Modeling';
         
@@ -90,34 +91,29 @@ const Navigation = {
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('data-page') === currentPage) {
-                link.classList.add('active');
+            const linkPage = link.getAttribute('data-page');
+            // Handle special case for aria-exp
+            if (linkPage === 'aria-exp' && currentPage === 'aria-exp') {
+                 link.classList.add('active');
+            } else if (linkPage !== 'aria-exp' && linkPage === currentPage) {
+                 link.classList.add('active');
             }
         });
     },
     
-    // =================================================================
-    // THIS IS THE NEW FUNCTION THAT FIXES THE NAVIGATION
-    // =================================================================
     updateNavigationLinks() {
         const { selectedCompanyId } = loadState();
         const navLinks = document.querySelectorAll('#sidebar-menu .nav-link');
 
         navLinks.forEach(link => {
             const page = link.dataset.page;
-
-            // The home link always goes to the main index page
             if (page === 'index' || page === 'home') {
                 link.href = 'index.html';
                 return; 
             }
-
-            // If a specific company is selected, all other links should include it
             if (selectedCompanyId && selectedCompanyId !== 'all') {
                 link.href = `${page}.html?company=${selectedCompanyId}`;
             } else {
-                // If "All Companies" is selected, link to the base page.
-                // The page's own script is responsible for handling the missing ID.
                 link.href = `${page}.html`;
             }
         });
@@ -127,7 +123,6 @@ const Navigation = {
         this.updateHeaderTitle();
         this.updateCompanySelector();
         this.updateActiveNavigation();
-        // This new call ensures the sidebar links are always correct
         this.updateNavigationLinks();
     }
 };
@@ -136,7 +131,7 @@ const Navigation = {
 // UTILITIES (Functions from original file)
 // =================================================================
 const Utils = {
-    // THIS IS THE NEW, FASTER, WORD-BY-WORD FUNCTION
+    // FASTER, WORD-BY-WORD FUNCTION
     typeWords(element, text, callback) {
         let i = 0;
         const words = text.split(' ');
@@ -149,7 +144,7 @@ const Utils = {
                 clearInterval(timer);
                 if (callback) callback();
             }
-        }, 100); // Faster interval
+        }, 25); // <-- FASTER INTERVAL
     },
 
     generateScenario(capabilityId, state, capabilities, capabilityScenarios) {

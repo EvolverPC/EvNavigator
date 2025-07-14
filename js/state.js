@@ -23,21 +23,38 @@ function getInitialState() {
         },
         ariaSettings: {
             isModalOpen: false,
-            ddDataRoom: true,
-            externalSources: {
+            expandedCategories: {}, // All categories collapsed by default
+            context: {
+                main: true,
+                ddDataRoom: true,
+                investmentThesis: true,
+                financialModel: true,
+                meetingTranscripts: false,
+            },
+            domainKnowledge: {
+                main: true,
+                playbooks: true,
+                kpiLibrary: true,
+                maturityModel: true,
+                industryBenchmarks: true,
+                bestPractices: false,
+            },
+            externalData: {
                 main: true,
                 linkedin: true,
                 pitchbook: false,
                 glassdoor: true,
                 web: true,
+                newsFeeds: true,
             },
-            internalSources: {
+            internalData: {
                 main: true,
                 erp: true,
                 crm: true,
                 hcm: false,
                 devops: true,
-                customerSuccess: true,
+                csm: true,
+                financialReports: true,
             }
         },
         modeling: {
@@ -61,7 +78,6 @@ function loadState() {
     if (savedState) {
         return JSON.parse(savedState);
     }
-    // If no state is saved, initialize and save it
     const initialState = getInitialState();
     saveState(initialState);
     return initialState;

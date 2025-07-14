@@ -8,11 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="min-h-screen w-full flex">
+    <div class="app-container">
         <div id="sidebar-container"></div>
-        <div class="flex-1 flex flex-col">
+        <div class="main-content-wrapper">
             <div id="header-container"></div>
-            <main id="main-content" class="flex-1 p-6 sm:p-8 overflow-y-auto">
+            <main id="main-content" class="p-6 sm:p-8">
                 <div class="flex items-center justify-center h-full">
                     <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
@@ -25,9 +25,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <!-- Load our scripts in the CORRECT order -->
-    <script src="js/data.js"></script>       <!-- 1. Data first (no dependencies) -->
-    <script src="js/state.js"></script>      <!-- 2. State management second (no dependencies) -->
-    <script src="js/shared.js"></script>     <!-- 3. Shared utilities third (depends on state/data) -->
-    <script src="js/workspace.js"></script>  <!-- 4. Page-specific script LAST -->
+    <script src="js/data.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/workspace.js"></script>
 </body>
 </html>
