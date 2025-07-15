@@ -47,11 +47,11 @@ const techflow_ariaResponses = {
     "Summarize the competitive landscape and TechFlow's position.": {
         id: 'competitive-landscape',
         title: "Competitive Landscape Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Competitive Landscape Analysis</h3><p class="text-sm text-gray-500">Source Documents: Market_Analysis_Gartner_2024.pdf, ...</p></div>
-            <div class="build-item space-y-4"><div class="font-semibold">Key Competitors vs. TechFlow Solutions:</div><div class="space-y-3 text-sm"><div class="flex items-center gap-4"><span class="w-32 font-medium text-gray-600">InnovateCorp</span><div class="flex-1 bg-gray-200 rounded-full h-5"><div class="bg-blue-500 h-5 rounded-full text-white text-xs flex items-center px-2" style="width: 75%">Market Leader</div></div></div><div class="flex items-center gap-4"><span class="w-32 font-medium text-gray-600">DataSystems</span><div class="flex-1 bg-gray-200 rounded-full h-5"><div class="bg-blue-400 h-5 rounded-full text-white text-xs flex items-center px-2" style="width: 60%">Established Player</div></div></div><div class="flex items-center gap-4"><span class="w-32 font-medium text-gray-600">TechFlow</span><div class="flex-1 bg-gray-200 rounded-full h-5"><div class="bg-teal-500 h-5 rounded-full text-white text-xs flex items-center px-2" style="width: 40%">Niche Challenger</div></div></div><div class="flex items-center gap-4"><span class="w-32 font-medium text-gray-600">AgileCloud</span><div class="flex-1 bg-gray-200 rounded-full h-5"><div class="bg-blue-300 h-5 rounded-full text-white text-xs flex items-center px-2" style="width: 35%">New Entrant</div></div></div></div></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="TechFlow operates as a niche challenger in a market dominated by InnovateCorp. While TechFlow has strong brand recognition in its specific vertical, it lacks the broad feature set and marketing budget of the leaders. Its primary competitive advantage is its deep domain expertise and customer service. The key risk is being squeezed between the feature-rich incumbents and more nimble new entrants like AgileCloud."></p></div>
-            <div class="build-item bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg"><p class="font-bold text-green-800">Judgement (High Confidence - 95%):</p><p class="text-green-700" data-typing-text="TechFlow has a defensible niche but faces significant scaling challenges. The investment thesis must focus on either deepening this niche or strategically expanding its feature set to compete more broadly."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Competitive Landscape Analysis</h3><p class="response-subtitle">Source Documents: Market_Analysis_Gartner_2024.pdf, ...</p></div>
+            <div class="build-item space-y-4"><div class="response-section-title">Key Competitors vs. TechFlow Solutions:</div><div class="bar-chart-container"><div class="bar-chart-item"><span class="bar-label">InnovateCorp</span><div class="bar-wrapper"><div class="bar" style="width: 75%; background-color: var(--accent-blue);">Market Leader</div></div></div><div class="bar-chart-item"><span class="bar-label">DataSystems</span><div class="bar-wrapper"><div class="bar" style="width: 60%; background-color: var(--accent-blue);">Established Player</div></div></div><div class="bar-chart-item"><span class="bar-label">TechFlow</span><div class="bar-wrapper"><div class="bar" style="width: 40%; background-color: var(--accent-teal);">Niche Challenger</div></div></div><div class="bar-chart-item"><span class="bar-label">AgileCloud</span><div class="bar-wrapper"><div class="bar" style="width: 35%; background-color: var(--accent-blue);">New Entrant</div></div></div></div></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="TechFlow operates as a niche challenger in a market dominated by InnovateCorp. While TechFlow has strong brand recognition in its specific vertical, it lacks the broad feature set and marketing budget of the leaders. Its primary competitive advantage is its deep domain expertise and customer service. The key risk is being squeezed between the feature-rich incumbents and more nimble new entrants like AgileCloud."></p></div>
+            <div class="build-item judgement-box success"><p class="judgement-title">Judgement (High Confidence - 95%):</p><p class="judgement-text" data-typing-text="TechFlow has a defensible niche but faces significant scaling challenges. The investment thesis must focus on either deepening this niche or strategically expanding its feature set to compete more broadly."></p></div>
         </div>`,
         followUpQuestions: ["How does TechFlow's pricing compare to these competitors?", "What is the customer sentiment for InnovateCorp vs. TechFlow?", "Generate a SWOT analysis for TechFlow."]
     },
@@ -62,40 +62,39 @@ const techflow_ariaResponses = {
             const { keyRisks } = state.diligenceWorkspace;
             const renderAnomaly = (anomaly) => {
                 const isFlagged = !!keyRisks[anomaly.id];
+                const severityClass = anomaly.severity === 'CRITICAL' ? 'critical' : 'high';
                 return `<div class="build-item space-y-3">
-                    <div class="flex justify-between items-start">
-                        <h3 class="text-lg font-semibold text-gray-900 pr-4">${anomaly.title}</h3>
-                        <button data-action="flag-response" data-response-id="${anomaly.id}" class="feedback-icon ${isFlagged ? 'filled' : ''} flex-shrink-0" title="Add to Workspace"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></button>
+                    <div class="response-title-area">
+                        <h3 class="response-title">${anomaly.title}</h3>
+                        <button data-action="flag-response" data-response-id="${anomaly.id}" class="feedback-icon ${isFlagged ? 'filled' : ''}" title="Add to Workspace"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></button>
                     </div>
-                    <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead><tr class="border-b"><th class="p-2">Issue</th><th class="p-2">Severity</th><th class="p-2">Impact</th></tr></thead><tbody><tr><td class="p-2">${anomaly.issue}</td><td class="p-2"><span class="font-bold px-2 py-0.5 rounded-full inline-block ${anomaly.severity === 'CRITICAL' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}">${anomaly.severity}</span></td><td class="p-2">${anomaly.impact}</td></tr></tbody></table></div>
-                    <div class="p-4 bg-blue-50 border-l-4 border-blue-500"><p class="text-sm text-gray-800"><span class="font-bold">Analysis:</span> <span class="anomaly-analysis-text" data-typing-text="${anomaly.analysis}"></span></p></div>
+                    <div class="data-table-container"><table class="data-table"><thead><tr><th>Issue</th><th>Severity</th><th>Impact</th></tr></thead><tbody><tr><td>${anomaly.issue}</td><td><span class="status-badge ${severityClass}">${anomaly.severity}</span></td><td>${anomaly.impact}</td></tr></tbody></table></div>
+                    <div class="analysis-box"><p class="response-text"><span class="font-bold">Analysis:</span> <span class="anomaly-analysis-text" data-typing-text="${anomaly.analysis}"></span></p></div>
                 </div>`;
             };
             const renderMinorObservation = (obs) => {
                 const isFlagged = !!keyRisks[obs.id];
-                return `<div class="p-3 bg-gray-50 rounded-lg border flex items-start justify-between gap-4">
-                    <div class="flex-grow"><p class="font-semibold text-gray-800">${obs.category}: <span class="font-normal">${obs.text}</span></p></div>
-                    <button data-action="flag-response" data-response-id="${obs.id}" class="feedback-icon ${isFlagged ? 'filled' : ''} flex-shrink-0" title="Add to Workspace"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></button>
+                return `<div class="minor-observation-item">
+                    <div><p class="font-semibold">${obs.category}: <span class="font-normal">${obs.text}</span></p></div>
+                    <button data-action="flag-response" data-response-id="${obs.id}" class="feedback-icon ${isFlagged ? 'filled' : ''}" title="Add to Workspace"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></button>
                 </div>`;
             };
 
             const minorObsExpanded = state.techflowAria.minorObservationsExpanded;
 
-            return `<div id="anomaly-discovery-content" class="space-y-6">
-                <div class="build-item bg-white p-6 rounded-lg shadow-md border border-red-200">
-                    <h2 class="text-xl font-semibold text-red-700 flex items-center gap-3 mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Significant Anomalies Detected</h2>
-                    <p class="text-gray-600" data-typing-text="Our Auto Due Diligence Agent has completed its analysis and identified 3 significant anomalies that require immediate attention. These findings could materially impact the investment decision and valuation model."></p>
+            return `<div id="anomaly-discovery-content" class="aria-response-content">
+                <div class="build-item alert-callout error">
+                    <h2 class="alert-callout-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Significant Anomalies Detected</h2>
+                    <p class="response-text" data-typing-text="Our Auto Due Diligence Agent has completed its analysis and identified 3 significant anomalies that require immediate attention. These findings could materially impact the investment decision and valuation model."></p>
                 </div>
                 ${techflow_anomalies.map(renderAnomaly).join('')}
-                <div class="build-item bg-white rounded-lg shadow-md border">
-                    <button class="p-6 cursor-pointer w-full" data-action="toggle-observations">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-700">Minor Observations (${techflow_minorObservations.length})</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-gray-500 transition-transform ${minorObsExpanded ? 'rotate-180' : ''}"><path d="m6 9 6 6 6-6"/></svg>
-                        </div>
+                <div class="build-item card-base">
+                    <button class="minor-observations-header" data-action="toggle-observations">
+                        <h3 class="response-title">Minor Observations (${techflow_minorObservations.length})</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon ${minorObsExpanded ? 'rotate-180' : ''}"><path d="m6 9 6 6 6-6"/></svg>
                     </button>
                     <div class="minor-observations-content ${minorObsExpanded ? 'expanded' : 'collapsed'}">
-                        <div class="px-6 pb-6 grid grid-cols-1 md:grid-cols-2 gap-4">${techflow_minorObservations.map(renderMinorObservation).join('')}</div>
+                        <div class="minor-observations-grid">${techflow_minorObservations.map(renderMinorObservation).join('')}</div>
                     </div>
                 </div>
             </div>`;
@@ -105,115 +104,115 @@ const techflow_ariaResponses = {
     "What are the key market trends impacting the company?": { 
         id: 'market-trends',
         title: "Key Market Trends Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Key Market Trends Analysis</h3><p class="text-sm text-gray-500">Source Documents: Industry_Analyst_Reports_2025.pdf, ...</p></div>
-            <div class="build-item space-y-4 text-gray-700"><div class="flex items-start gap-3"><span class="font-bold text-blue-600 text-xl">1</span><div><h4 class="font-semibold">AI Integration:</h4><p class="text-sm" data-typing-text="Customers are increasingly demanding AI-powered features for automation and predictive analytics. TechFlow's recent 'AI Assistant' launch failure indicates a critical gap in this area."></p></div></div><div class="flex items-start gap-3"><span class="font-bold text-blue-600 text-xl">2</span><div><h4 class="font-semibold">Platform Consolidation:</h4><p class="text-sm" data-typing-text="Enterprise buyers prefer integrated platforms over point solutions. TechFlow's standalone nature is a growing disadvantage against competitors like InnovateCorp who offer a full suite."></p></div></div><div class="flex items-start gap-3"><span class="font-bold text-blue-600 text-xl">3</span><div><h4 class="font-semibold">Data Privacy Regulations:</h4><p class="text-sm" data-typing-text="Increased scrutiny on data handling (GDPR, CCPA) creates compliance overhead but also an opportunity for vendors who can demonstrate robust security, an area where TechFlow is currently average."></p></div></div></div>
-            <div class="build-item bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg"><p class="font-bold text-amber-800">Judgement (Medium Confidence - 80%):</p><p class="text-amber-700" data-typing-text="The company is behind on two of the three most critical market trends (AI, Platform). This poses a significant threat to long-term growth unless the product roadmap is aggressively re-prioritized post-acquisition."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Key Market Trends Analysis</h3><p class="response-subtitle">Source Documents: Industry_Analyst_Reports_2025.pdf, ...</p></div>
+            <div class="build-item list-container"><div class="list-item"><span class="list-number" style="color:var(--accent-blue)">1</span><div><h4 class="list-title">AI Integration:</h4><p class="list-text" data-typing-text="Customers are increasingly demanding AI-powered features for automation and predictive analytics. TechFlow's recent 'AI Assistant' launch failure indicates a critical gap in this area."></p></div></div><div class="list-item"><span class="list-number" style="color:var(--accent-blue)">2</span><div><h4 class="list-title">Platform Consolidation:</h4><p class="list-text" data-typing-text="Enterprise buyers prefer integrated platforms over point solutions. TechFlow's standalone nature is a growing disadvantage against competitors like InnovateCorp who offer a full suite."></p></div></div><div class="list-item"><span class="list-number" style="color:var(--accent-blue)">3</span><div><h4 class="list-title">Data Privacy Regulations:</h4><p class="list-text" data-typing-text="Increased scrutiny on data handling (GDPR, CCPA) creates compliance overhead but also an opportunity for vendors who can demonstrate robust security, an area where TechFlow is currently average."></p></div></div></div>
+            <div class="build-item judgement-box warning"><p class="judgement-title">Judgement (Medium Confidence - 80%):</p><p class="judgement-text" data-typing-text="The company is behind on two of the three most critical market trends (AI, Platform). This poses a significant threat to long-term growth unless the product roadmap is aggressively re-prioritized post-acquisition."></p></div>
         </div>`,
         followUpQuestions: ["How much would it cost to build a competitive AI feature?", "Which companies could TechFlow acquire to become a platform?", "Draft a slide on market trends for the IC memo."]
     },
     "Analyze the credibility of the 5-year strategic plan.": { 
         id: 'strategic-plan-credibility',
         title: "Strategic Plan Credibility Assessment",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Strategic Plan Credibility Assessment</h3><p class="text-sm text-gray-500">Source Documents: 5-Year_Strategic_Plan.pptx, ...</p></div>
-            <div class="build-item space-y-4"><div class="font-semibold">Plan vs. Reality Check:</div><table class="w-full text-sm text-left"><thead><tr class="border-b"><th class="p-2">Metric</th><th class="p-2">Plan (YoY Growth)</th><th class="p-2">Actual (LTM)</th><th class="p-2">Credibility</th></tr></thead><tbody><tr class="border-b"><td class="p-2">New ARR Growth</td><td class="p-2">40%</td><td class="p-2 text-red-600 font-semibold">15%</td><td class="p-2 text-red-600">Low</td></tr><tr class="border-b"><td class="p-2">Geographic Expansion (EMEA)</td><td class="p-2">$5M ARR</td><td class="p-2 text-red-600 font-semibold">$0.5M ARR</td><td class="p-2 text-red-600">Low</td></tr><tr><td class="p-2">Headcount Growth</td><td class="p-2">25%</td><td class="p-2 text-green-600 font-semibold">22%</td><td class="p-2 text-green-600">High</td></tr></tbody></table></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="The strategic plan's revenue projections are overly optimistic and not grounded in recent performance. The plan assumes a 40% growth in new ARR, whereas the company has only achieved 15% in the last twelve months. The EMEA expansion target is significantly off-track. The plan lacks concrete initiatives to address the product gaps and competitive pressures."></p></div>
-            <div class="build-item bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"><p class="font-bold text-red-800">Judgement (High Confidence - 95%):</p><p class="text-red-700" data-typing-text="The management's strategic plan is not credible and requires a complete overhaul. The financial model should be rebuilt using a more conservative, bottom-up approach based on historical performance and known risks."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Strategic Plan Credibility Assessment</h3><p class="response-subtitle">Source Documents: 5-Year_Strategic_Plan.pptx, ...</p></div>
+            <div class="build-item"><div class="response-section-title">Plan vs. Reality Check:</div><div class="data-table-container"><table class="data-table"><thead><tr><th>Metric</th><th>Plan (YoY Growth)</th><th>Actual (LTM)</th><th>Credibility</th></tr></thead><tbody><tr><td>New ARR Growth</td><td>40%</td><td class="text-error">15%</td><td class="text-error">Low</td></tr><tr><td>Geographic Expansion (EMEA)</td><td>$5M ARR</td><td class="text-error">$0.5M ARR</td><td class="text-error">Low</td></tr><tr><td>Headcount Growth</td><td>25%</td><td class="text-success">22%</td><td class="text-success">High</td></tr></tbody></table></div></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="The strategic plan's revenue projections are overly optimistic and not grounded in recent performance. The plan assumes a 40% growth in new ARR, whereas the company has only achieved 15% in the last twelve months. The EMEA expansion target is significantly off-track. The plan lacks concrete initiatives to address the product gaps and competitive pressures."></p></div>
+            <div class="build-item judgement-box error"><p class="judgement-title">Judgement (High Confidence - 95%):</p><p class="judgement-text" data-typing-text="The management's strategic plan is not credible and requires a complete overhaul. The financial model should be rebuilt using a more conservative, bottom-up approach based on historical performance and known risks."></p></div>
         </div>`,
         followUpQuestions: ["Build a more realistic 'Base Case' financial model.", "What are the key questions for the CEO about this plan?", "How does this plan compare to their last 3-year plan?"]
     },
     "Show the Quality of Revenue report.": { 
         id: 'qor-report',
         title: "Quality of Revenue Report",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Quality of Revenue (QoR) Report</h3><p class="text-sm text-gray-500">Source Documents: Stripe_Data_Export.csv, ...</p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Quality of Revenue (QoR) Report</h3><p class="response-subtitle">Source Documents: Stripe_Data_Export.csv, ...</p></div>
             <div class="build-item grid md:grid-cols-2 gap-6">
-                <div class="space-y-6"><div class="p-4 bg-gray-50 rounded-lg"><h4 class="font-semibold text-gray-800 mb-2">Upsell / Cross-sell</h4><ul class="text-sm space-y-1 list-disc list-inside" data-animate-list><li>Only 15% of customers use >1 module.</li><li>No formal process for identifying expansion opportunities.</li><li>Sales team is compensated on new logos only.</li></ul></div><div class="p-4 bg-gray-50 rounded-lg"><h4 class="font-semibold text-gray-800 mb-2">Packaging & Pricing</h4><ul class="text-sm space-y-1 list-disc list-inside" data-animate-list><li>Single, flat-rate pricing model limits monetization.</li><li>No usage-based or tiered pricing exists.</li><li>Heavy, inconsistent discounting observed at quarter-end.</li></ul></div></div>
-                <div class="p-4 bg-gray-50 rounded-lg"><h4 class="font-semibold text-gray-800 mb-4">ARR Growth Recommendations</h4><div class="space-y-3"><div class="grid grid-cols-3 gap-4 text-sm font-medium text-gray-500 border-b pb-2"><div class="col-span-2">Recommendation</div><div>Impact</div></div><div class="grid grid-cols-3 gap-4 text-sm items-center"><div class="col-span-2">Implement 3-tiered pricing (Good, Better, Best) with usage-based components.</div><div><span class="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">High</span></div></div><div class="grid grid-cols-3 gap-4 text-sm items-center"><div class="col-span-2">Launch a program to convert the perpetual license base to recurring subscriptions.</div><div><span class="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">High</span></div></div><div class="grid grid-cols-3 gap-4 text-sm items-center"><div class="col-span-2">Introduce a dedicated Customer Success team focused on NRR.</div><div><span class="text-xs font-semibold px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">Medium</span></div></div></div></div>
+                <div class="space-y-6"><div class="card-base"><h4 class="response-section-title">Upsell / Cross-sell</h4><ul class="list-disc pl-5 space-y-1 text-sm" data-animate-list><li>Only 15% of customers use >1 module.</li><li>No formal process for identifying expansion opportunities.</li><li>Sales team is compensated on new logos only.</li></ul></div><div class="card-base"><h4 class="response-section-title">Packaging & Pricing</h4><ul class="list-disc pl-5 space-y-1 text-sm" data-animate-list><li>Single, flat-rate pricing model limits monetization.</li><li>No usage-based or tiered pricing exists.</li><li>Heavy, inconsistent discounting observed at quarter-end.</li></ul></div></div>
+                <div class="card-base"><h4 class="response-section-title">ARR Growth Recommendations</h4><div class="data-table-container"><table class="data-table"><thead><tr><th>Recommendation</th><th>Impact</th></tr></thead><tbody><tr><td>Implement 3-tiered pricing (Good, Better, Best) with usage-based components.</td><td><span class="status-badge high">High</span></td></tr><tr><td>Launch a program to convert the perpetual license base to recurring subscriptions.</td><td><span class="status-badge high">High</span></td></tr><tr><td>Introduce a dedicated Customer Success team focused on NRR.</td><td><span class="status-badge">Medium</span></td></tr></tbody></table></div></div>
             </div>
-            <div class="build-item bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg"><p class="font-bold text-green-800">Judgement (High Confidence - 90%):</p><p class="text-green-700" data-typing-text="Significant, untapped potential exists to improve revenue quality. Implementing tiered packaging, an expansion-focused sales motion, and a proactive customer success function could dramatically increase NRR and LTV."></p></div>
+            <div class="build-item judgement-box success"><p class="judgement-title">Judgement (High Confidence - 90%):</p><p class="judgement-text" data-typing-text="Significant, untapped potential exists to improve revenue quality. Implementing tiered packaging, an expansion-focused sales motion, and a proactive customer success function could dramatically increase NRR and LTV."></p></div>
         </div>`,
         followUpQuestions: ["Generate a draft of a 3-tiered pricing model.", "What is the estimated cost to build a Customer Success team?", "Model the revenue impact of converting the license base."]
     },
     "Analyze the efficiency of the sales and marketing funnel.": { 
         id: 'funnel-efficiency',
         title: "Sales & Marketing Funnel Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Sales & Marketing Funnel Analysis</h3><p class="text-sm text-gray-500">Source Documents: HubSpot_Analytics_Export.csv, ...</p></div>
-            <div class="build-item space-y-2"><div class="flex items-center gap-2"><div class="w-24 text-right text-sm font-semibold">Leads</div><div class="flex-1"><div class="h-8 bg-teal-500 text-white text-xs flex items-center justify-center" style="width: 100%;">10,000</div></div></div><div class="flex items-center gap-2"><div class="w-24 text-right text-sm font-semibold">MQLs (5%)</div><div class="flex-1"><div class="h-8 bg-teal-400 text-white text-xs flex items-center justify-center" style="width: 50%;">500</div></div></div><div class="flex items-center gap-2"><div class="w-24 text-right text-sm font-semibold">SQLs (20%)</div><div class="flex-1"><div class="h-8 bg-teal-300 text-black text-xs flex items-center justify-center" style="width: 10%;">100</div></div></div><div class="flex items-center gap-2"><div class="w-24 text-right text-sm font-semibold">Wins (15%)</div><div class="flex-1"><div class="h-8 bg-teal-200 text-black text-xs flex items-center justify-center" style="width: 1.5%;">15</div></div></div></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="The funnel shows a significant drop-off from MQL (Marketing Qualified Lead) to SQL (Sales Qualified Lead), with an 80% leakage rate. This suggests a misalignment between marketing campaigns and sales criteria, or an ineffective lead nurturing process. The final win rate of 15% from qualified opportunities is below the industry benchmark of 20-25%."></p></div>
-            <div class="build-item bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg"><p class="font-bold text-amber-800">Judgement (Medium Confidence - 85%):</p><p class="text-amber-700" data-typing-text="The sales and marketing engine is inefficient. There is a clear opportunity to create value by improving lead qualification, nurturing, and sales closing processes."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Sales & Marketing Funnel Analysis</h3><p class="response-subtitle">Source Documents: HubSpot_Analytics_Export.csv, ...</p></div>
+            <div class="build-item funnel-chart-container"><div class="funnel-item"><div class="funnel-label">Leads</div><div class="funnel-bar" style="width: 100%; background-color: var(--accent-teal);">10,000</div></div><div class="funnel-item"><div class="funnel-label">MQLs (5%)</div><div class="funnel-bar" style="width: 50%; background-color: var(--accent-teal);">500</div></div><div class="funnel-item"><div class="funnel-label">SQLs (20%)</div><div class="funnel-bar" style="width: 10%; background-color: var(--accent-teal);">100</div></div><div class="funnel-item"><div class="funnel-label">Wins (15%)</div><div class="funnel-bar" style="width: 1.5%; background-color: var(--accent-teal);">15</div></div></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="The funnel shows a significant drop-off from MQL (Marketing Qualified Lead) to SQL (Sales Qualified Lead), with an 80% leakage rate. This suggests a misalignment between marketing campaigns and sales criteria, or an ineffective lead nurturing process. The final win rate of 15% from qualified opportunities is below the industry benchmark of 20-25%."></p></div>
+            <div class="build-item judgement-box warning"><p class="judgement-title">Judgement (Medium Confidence - 85%):</p><p class="judgement-text" data-typing-text="The sales and marketing engine is inefficient. There is a clear opportunity to create value by improving lead qualification, nurturing, and sales closing processes."></p></div>
         </div>`,
         followUpQuestions: ["Draft an email to the Head of Sales about the MQL-to-SQL drop-off.", "What are the top 3 initiatives to improve the win rate?", "How does this funnel compare to portfolio company benchmarks?"]
     },
     "Identify the top 10 customers by revenue and any concentration risks.": { 
         id: 'customer-concentration',
         title: "Customer Concentration Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Customer Concentration Analysis</h3><p class="text-sm text-gray-500">Source Documents: ARR_by_Customer.xlsx, ...</p></div>
-            <div class="build-item space-y-4"><div class="font-semibold">Top 10 Customer ARR Contribution:</div><div class="w-full bg-gray-200 rounded-full h-6 flex"><div class="bg-red-500 h-6 text-white text-xs flex items-center justify-center" style="width: 28%" title="Global FinCorp: $3.36M">Top 2 (28%)</div><div class="bg-orange-500 h-6 text-white text-xs flex items-center justify-center" style="width: 17%" title="NextGen Health: $2.04M">Top 3-5 (17%)</div><div class="bg-yellow-500 h-6 text-black text-xs flex items-center justify-center" style="width: 15%" title="Innovate Retail: $1.8M">Top 6-10 (15%)</div><div class="bg-gray-300 h-6 text-black text-xs flex items-center justify-center" style="width: 40%">All Others (40%)</div></div></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="There is a significant customer concentration risk. The top 2 customers, Global FinCorp and HealthUnited, account for 28% of the total $12M reported ARR. The top 10 customers collectively represent 60% of total ARR. Furthermore, the contract for Global FinCorp ($3.36M ARR) is up for renewal in 4 months and contains non-standard termination for convenience clauses."></p></div>
-            <div class="build-item bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"><p class="font-bold text-red-800">Judgement (High Confidence - 100%):</p><p class="text-red-700" data-typing-text="Customer concentration is a critical risk. A key condition of the deal should be the successful and early renewal of the Global FinCorp contract under standard terms. A VCP to diversify the customer base is essential."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Customer Concentration Analysis</h3><p class="response-subtitle">Source Documents: ARR_by_Customer.xlsx, ...</p></div>
+            <div class="build-item"><div class="response-section-title">Top 10 Customer ARR Contribution:</div><div class="stacked-bar-container"><div class="stacked-bar-segment" style="width: 28%; background-color: var(--status-error);" title="Top 2: $3.36M">Top 2 (28%)</div><div class="stacked-bar-segment" style="width: 17%; background-color: var(--status-warning);" title="Top 3-5: $2.04M">Top 3-5 (17%)</div><div class="stacked-bar-segment" style="width: 15%; background-color: var(--accent-blue);" title="Top 6-10: $1.8M">Top 6-10 (15%)</div><div class="stacked-bar-segment" style="width: 40%; background-color: var(--bg-hover); color: var(--text-secondary);">All Others (40%)</div></div></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="There is a significant customer concentration risk. The top 2 customers, Global FinCorp and HealthUnited, account for 28% of the total $12M reported ARR. The top 10 customers collectively represent 60% of total ARR. Furthermore, the contract for Global FinCorp ($3.36M ARR) is up for renewal in 4 months and contains non-standard termination for convenience clauses."></p></div>
+            <div class="build-item judgement-box error"><p class="judgement-title">Judgement (High Confidence - 100%):</p><p class="judgement-text" data-typing-text="Customer concentration is a critical risk. A key condition of the deal should be the successful and early renewal of the Global FinCorp contract under standard terms. A VCP to diversify the customer base is essential."></p></div>
         </div>`,
         followUpQuestions: ["What is the renewal status of the Global FinCorp contract?", "Request all contracts with non-standard terms.", "What is the plan to diversify the customer base?"]
     },
     "Summarize the key architectural risks and their potential cost to remediate.": { 
         id: 'architectural-risks',
         title: "Architectural Risk Summary",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Architectural Risk Summary</h3><p class="text-sm text-gray-500">Source Documents: Tech_Architecture_Overview.pptx, ...</p></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="The core application is a legacy monolith built on an outdated framework. This creates significant risks: 1) **Scalability:** It cannot handle the projected 3x user growth. 2) **Developer Velocity:** A small change requires a full system redeployment, slowing down feature releases. 3) **Hiring:** It is difficult to find engineers skilled in this legacy technology. The CTO estimates a full migration to a microservices architecture would take 18-24 months and cost approximately $4.5M in dedicated engineering resources."></p></div>
-            <div class="build-item bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"><p class="font-bold text-red-800">Judgement (High Confidence - 95%):</p><p class="text-red-700" data-typing-text="Technical debt is a critical issue that will throttle growth if not addressed. The remediation cost must be factored into the valuation model, and a detailed migration plan should be a Day 1 priority."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Architectural Risk Summary</h3><p class="response-subtitle">Source Documents: Tech_Architecture_Overview.pptx, ...</p></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="The core application is a legacy monolith built on an outdated framework. This creates significant risks: 1) **Scalability:** It cannot handle the projected 3x user growth. 2) **Developer Velocity:** A small change requires a full system redeployment, slowing down feature releases. 3) **Hiring:** It is difficult to find engineers skilled in this legacy technology. The CTO estimates a full migration to a microservices architecture would take 18-24 months and cost approximately $4.5M in dedicated engineering resources."></p></div>
+            <div class="build-item judgement-box error"><p class="judgement-title">Judgement (High Confidence - 95%):</p><p class="judgement-text" data-typing-text="Technical debt is a critical issue that will throttle growth if not addressed. The remediation cost must be factored into the valuation model, and a detailed migration plan should be a Day 1 priority."></p></div>
         </div>`,
         followUpQuestions: ["Estimate the cost and timeline for a monolith-to-microservices migration.", "What is the current plan for this migration?", "Draft an IC memo slide on technical debt."]
     },
     "How does the R&D team's velocity compare to industry benchmarks?": { 
         id: 'rd-velocity',
         title: "R&D Velocity & Efficiency Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">R&D Velocity & Efficiency</h3><p class="text-sm text-gray-500">Source Documents: Jira_Velocity_Reports.csv, ...</p></div>
-            <div class="build-item space-y-4"><div class="font-semibold">Key R&D Metrics:</div><table class="w-full text-sm text-left"><thead><tr class="border-b"><th class="p-2">Metric</th><th class="p-2">TechFlow</th><th class="p-2">Industry Benchmark</th><th class="p-2">Assessment</th></tr></thead><tbody><tr class="border-b"><td class="p-2">Cycle Time (Idea to Prod)</td><td class="p-2 font-semibold">95 days</td><td class="p-2">45-60 days</td><td class="p-2 text-red-600">Poor</td></tr><tr class="border-b"><td class="p-2">Deployment Frequency</td><td class="p-2 font-semibold">Monthly</td><td class="p-2">Weekly/Daily</td><td class="p-2 text-red-600">Poor</td></tr><tr><td class="p-2">R&D % of Revenue</td><td class="p-2 font-semibold">32%</td><td class="p-2">20-25%</td><td class="p-2 text-amber-600">High</td></tr></tbody></table></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="TechFlow's R&D velocity is significantly below industry standards. The long cycle time and infrequent deployments are direct symptoms of the monolithic architecture and lack of automated testing. Furthermore, R&D spending as a percentage of revenue is high, indicating inefficiency. The company is spending more than its peers to produce less."></p></div>
-            <div class="build-item bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"><p class="font-bold text-red-800">Judgement (High Confidence - 90%):</p><p class="text-red-700" data-typing-text="The R&D function is inefficient and slow, representing a major operational drag. A transformation plan focusing on DevOps, agile practices, and ROI-based project selection is required."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">R&D Velocity & Efficiency</h3><p class="response-subtitle">Source Documents: Jira_Velocity_Reports.csv, ...</p></div>
+            <div class="build-item"><div class="response-section-title">Key R&D Metrics:</div><div class="data-table-container"><table class="data-table"><thead><tr><th>Metric</th><th>TechFlow</th><th>Industry Benchmark</th><th>Assessment</th></tr></thead><tbody><tr><td>Cycle Time (Idea to Prod)</td><td>95 days</td><td>45-60 days</td><td class="text-error">Poor</td></tr><tr><td>Deployment Frequency</td><td>Monthly</td><td>Weekly/Daily</td><td class="text-error">Poor</td></tr><tr><td>R&D % of Revenue</td><td>32%</td><td>20-25%</td><td class="text-warning">High</td></tr></tbody></table></div></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="TechFlow's R&D velocity is significantly below industry standards. The long cycle time and infrequent deployments are direct symptoms of the monolithic architecture and lack of automated testing. Furthermore, R&D spending as a percentage of revenue is high, indicating inefficiency. The company is spending more than its peers to produce less."></p></div>
+            <div class="build-item judgement-box error"><p class="judgement-title">Judgement (High Confidence - 90%):</p><p class="judgement-text" data-typing-text="The R&D function is inefficient and slow, representing a major operational drag. A transformation plan focusing on DevOps, agile practices, and ROI-based project selection is required."></p></div>
         </div>`,
         followUpQuestions: ["Generate a job description for a 'Lead DevOps Engineer'.", "What are the main drivers of the long cycle time?", "How can we improve the ROI of R&D spend?"]
     },
     "What is the plan for migrating off the legacy monolithic architecture?": { 
         id: 'migration-plan',
         title: "Monolith Migration Plan Assessment",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Monolith Migration Plan Assessment</h3><p class="text-sm text-gray-500">Source Documents: Project_Phoenix_Migration_Plan.pptx, ...</p></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="Management has a high-level plan, codenamed 'Project Phoenix,' to migrate to a microservices architecture. However, the plan lacks critical details. There is no budget allocated, no specific engineering resources assigned, and no clear strategy for data migration or managing dependencies during the transition. The CTO acknowledged in an interview that the plan is 'more of a vision than a blueprint' at this stage."></p></div>
-            <div class="build-item bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg"><p class="font-bold text-amber-800">Judgement (Medium Confidence - 75%):</p><p class="text-amber-700" data-typing-text="A migration plan exists conceptually but is not actionable. The lack of detail, budget, and resourcing makes it highly unlikely to succeed as currently outlined. This must be treated as a new initiative to be built from the ground up post-close."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Monolith Migration Plan Assessment</h3><p class="response-subtitle">Source Documents: Project_Phoenix_Migration_Plan.pptx, ...</p></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="Management has a high-level plan, codenamed 'Project Phoenix,' to migrate to a microservices architecture. However, the plan lacks critical details. There is no budget allocated, no specific engineering resources assigned, and no clear strategy for data migration or managing dependencies during the transition. The CTO acknowledged in an interview that the plan is 'more of a vision than a blueprint' at this stage."></p></div>
+            <div class="build-item judgement-box warning"><p class="judgement-title">Judgement (Medium Confidence - 75%):</p><p class="judgement-text" data-typing-text="A migration plan exists conceptually but is not actionable. The lack of detail, budget, and resourcing makes it highly unlikely to succeed as currently outlined. This must be treated as a new initiative to be built from the ground up post-close."></p></div>
         </div>`,
         followUpQuestions: ["Estimate the cost and timeline for a monolith-to-microservices migration.", "Who on the team has experience with microservices?", "Generate key questions for the CTO about this plan."]
     },
     "What are the key risks to achieving the 2025 forecast?": { 
         id: 'forecast-risks',
         title: "2025 Forecast Risk Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">2025 Forecast Risk Analysis</h3><p class="text-sm text-gray-500">Source Documents: Management_Financial_Projections.xlsx, ...</p></div>
-            <div class="build-item space-y-4"><div class="font-semibold">Top 3 Risks to Forecast:</div><div class="p-4 border rounded-lg"><h4 class="font-semibold text-red-600">1. Customer Concentration & Churn</h4><p class="text-sm text-gray-600" data-typing-text="The forecast assumes renewal of Global FinCorp ($3.36M) and a reduction in logo churn from 18% to 12%. This is a high-risk assumption."></p></div><div class="p-4 border rounded-lg"><h4 class="font-semibold text-red-600">2. New Product Revenue</h4><p class="text-sm text-gray-600" data-typing-text="The model includes $4M in revenue from new products in 2025. Given the 100% failure rate of the last 3 launches, this revenue is highly speculative."></p></div><div class="p-4 border rounded-lg"><h4 class="font-semibold text-amber-600">3. Sales Team Ramp-up</h4><p class="text-sm text-gray-600" data-typing-text="The plan requires 10 new sales reps to be fully ramped and productive within 6 months. Historical data shows the average ramp time is 9-12 months."></p></div></div>
-            <div class="build-item bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg"><p class="font-bold text-red-800">Judgement (High Confidence - 95%):</p><p class="text-red-700" data-typing-text="The 2025 forecast as presented by management is not achievable. We recommend creating a 'Base Case' model that removes all new product revenue and uses historical churn and sales ramp-up rates."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">2025 Forecast Risk Analysis</h3><p class="response-subtitle">Source Documents: Management_Financial_Projections.xlsx, ...</p></div>
+            <div class="build-item list-container"><div class="list-item"><h4 class="list-title text-error">1. Customer Concentration & Churn</h4><p class="list-text" data-typing-text="The forecast assumes renewal of Global FinCorp ($3.36M) and a reduction in logo churn from 18% to 12%. This is a high-risk assumption."></p></div><div class="list-item"><h4 class="list-title text-error">2. New Product Revenue</h4><p class="list-text" data-typing-text="The model includes $4M in revenue from new products in 2025. Given the 100% failure rate of the last 3 launches, this revenue is highly speculative."></p></div><div class="list-item"><h4 class="list-title text-warning">3. Sales Team Ramp-up</h4><p class="list-text" data-typing-text="The plan requires 10 new sales reps to be fully ramped and productive within 6 months. Historical data shows the average ramp time is 9-12 months."></p></div></div>
+            <div class="build-item judgement-box error"><p class="judgement-title">Judgement (High Confidence - 95%):</p><p class="judgement-text" data-typing-text="The 2025 forecast as presented by management is not achievable. We recommend creating a 'Base Case' model that removes all new product revenue and uses historical churn and sales ramp-up rates."></p></div>
         </div>`,
         followUpQuestions: ["Build the 'Base Case' financial model.", "What is the financial impact of the Global FinCorp churn?", "How much cash would be needed to fund the plan?"]
     },
     "Analyze the quality of earnings and identify any one-time adjustments.": { 
         id: 'qoe-analysis',
         title: "Quality of Earnings Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Quality of Earnings (QoE) Analysis</h3><p class="text-sm text-gray-500">Source Documents: Audited_Financials_2024.pdf, ...</p></div>
-            <div class="build-item"><p class="font-semibold">Analysis:</p><p class="text-gray-700" data-typing-text="We have adjusted the reported EBITDA of $6.8M for two key items: 1) **Non-recurring Legal Fees ($0.45M):** The company incurred significant one-time legal expenses related to a patent dispute that has now been settled. 2) **Owner's Salary Adjustment ($0.27M):** The founder/CEO's salary is below market rate. We have adjusted this to a market-rate salary of $450K, resulting in a $0.27M reduction in EBITDA. The resulting Adjusted EBITDA of $6.08M is a more accurate representation of the company's sustainable profitability."></p></div>
-            <div class="build-item bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg"><p class="font-bold text-green-800">Judgement (Medium Confidence - 85%):</p><p class="text-green-700" data-typing-text="The quality of earnings is reasonably high after adjustments. The legal fees appear genuinely non-recurring. Further diligence is needed to confirm the market rate for the CEO's salary."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Quality of Earnings (QoE) Analysis</h3><p class="response-subtitle">Source Documents: Audited_Financials_2024.pdf, ...</p></div>
+            <div class="build-item"><p class="response-section-title">Analysis:</p><p class="response-text" data-typing-text="We have adjusted the reported EBITDA of $6.8M for two key items: 1) **Non-recurring Legal Fees ($0.45M):** The company incurred significant one-time legal expenses related to a patent dispute that has now been settled. 2) **Owner's Salary Adjustment ($0.27M):** The founder/CEO's salary is below market rate. We have adjusted this to a market-rate salary of $450K, resulting in a $0.27M reduction in EBITDA. The resulting Adjusted EBITDA of $6.08M is a more accurate representation of the company's sustainable profitability."></p></div>
+            <div class="build-item judgement-box success"><p class="judgement-title">Judgement (Medium Confidence - 85%):</p><p class="judgement-text" data-typing-text="The quality of earnings is reasonably high after adjustments. The legal fees appear genuinely non-recurring. Further diligence is needed to confirm the market rate for the CEO's salary."></p></div>
         </div>`,
         followUpQuestions: ["Draft an email to the CFO requesting clarification on revenue recognition policies.", "Are there any other potential one-time adjustments?", "Show the full QoE bridge."]
     },
     "Draft a 'Go-to-Market' slide for the IC memo.": {
         id: 'draft-gtm-slide',
         title: "Draft GTM Slide",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">IC Memo Slide: Go-to-Market Strategy</h4>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">IC Memo Slide: Go-to-Market Strategy</h4>
             <ul class="list-disc pl-5 space-y-2 text-sm" data-animate-list>
                 <li><span class="font-semibold">Phase 1 (0-6 Months):</span> Deepen niche focus. Retrain sales team on value-based selling for the core vertical. Implement a dedicated Customer Success function to reduce existing logo churn from 18% to 12%.</li>
                 <li><span class="font-semibold">Phase 2 (6-18 Months):</span> Introduce tiered pricing model to drive expansion revenue. Launch targeted marketing campaigns to win back market share from 'DataSystems'.</li>
@@ -225,7 +224,7 @@ const techflow_ariaResponses = {
     "Prioritize 'Platform Consolidation' risk in the 100-day plan.": {
         id: 'prioritize-risk',
         title: "Prioritize Risk in 100-Day Plan",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-green-50 text-green-800">
+        renderFunc: () => `<div class="aria-response-content build-item card-base text-success">
             <p data-typing-text="**Action Complete.** The risk of 'Platform Consolidation' has been added as a P1 priority to the draft 100-Day Plan. A new workstream, 'Competitive Analysis & Product Strategy,' has been created and assigned to the Head of Product."></p>
         </div>`,
         followUpQuestions: []
@@ -233,8 +232,8 @@ const techflow_ariaResponses = {
     "Generate key questions for the CEO regarding the strategic plan.": {
         id: 'generate-ceo-questions',
         title: "Generated CEO Questions",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">Key Questions for CEO on Strategic Plan</h4>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">Key Questions for CEO on Strategic Plan</h4>
             <ol class="list-decimal pl-5 space-y-2 text-sm" data-animate-list>
                 <li>The plan projects 40% new ARR growth, but historical performance is 15%. What specific, new initiatives will bridge this 25% gap?</li>
                 <li>The EMEA expansion target of $5M seems ambitious given the current $0.5M run-rate. What is the detailed plan for headcount, marketing, and channel partnerships to support this?</li>
@@ -246,37 +245,37 @@ const techflow_ariaResponses = {
     "Generate a pricing model with 'Good-Better-Best' tiers.": {
         id: 'generate-pricing-model',
         title: "Generated Pricing Model",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">Draft Pricing Model: 3-Tier Structure</h4>
-            <table class="w-full text-sm text-left">
-                <thead class="border-b"><tr class="font-semibold"><th></th><th class="p-2">Starter (Good)</th><th class="p-2">Professional (Better)</th><th class="p-2">Enterprise (Best)</th></tr></thead>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">Draft Pricing Model: 3-Tier Structure</h4>
+            <div class="data-table-container"><table class="data-table">
+                <thead><tr><th></th><th>Starter (Good)</th><th>Professional (Better)</th><th>Enterprise (Best)</th></tr></thead>
                 <tbody>
-                    <tr class="border-b"><td class="p-2 font-medium">Core Features</td><td class="p-2 text-center text-green-600">✔</td><td class="p-2 text-center text-green-600">✔</td><td class="p-2 text-center text-green-600">✔</td></tr>
-                    <tr class="border-b"><td class="p-2 font-medium">Advanced Reporting</td><td class="p-2 text-center text-red-600">✖</td><td class="p-2 text-center text-green-600">✔</td><td class="p-2 text-center text-green-600">✔</td></tr>
-                    <tr class="border-b"><td class="p-2 font-medium">API Access</td><td class="p-2 text-center text-red-600">✖</td><td class="p-2 text-center text-green-600">✔</td><td class="p-2 text-center text-green-600">✔</td></tr>
-                    <tr><td class="p-2 font-medium">Dedicated Support</td><td class="p-2 text-center text-red-600">✖</td><td class="p-2 text-center text-red-600">✖</td><td class="p-2 text-center text-green-600">✔</td></tr>
+                    <tr><td>Core Features</td><td class="text-center text-success">✔</td><td class="text-center text-success">✔</td><td class="text-center text-success">✔</td></tr>
+                    <tr><td>Advanced Reporting</td><td class="text-center text-error">✖</td><td class="text-center text-success">✔</td><td class="text-center text-success">✔</td></tr>
+                    <tr><td>API Access</td><td class="text-center text-error">✖</td><td class="text-center text-success">✔</td><td class="text-center text-success">✔</td></tr>
+                    <tr><td>Dedicated Support</td><td class="text-center text-error">✖</td><td class="text-center text-error">✖</td><td class="text-center text-success">✔</td></tr>
                 </tbody>
-            </table>
+            </table></div>
         </div>`,
         followUpQuestions: []
     },
     "Draft an email to the Head of Sales about the MQL-to-SQL drop-off.": {
         id: 'draft-email-mql',
         title: "Draft Email to Head of Sales",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50 font-sans text-sm">
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
             <p><span class="font-semibold">To:</span> Head of Sales</p>
             <p><span class="font-semibold">Subject:</span> Urgent Review: MQL-to-SQL Conversion Rate</p>
-            <hr class="my-2">
-            <div data-typing-text="Hi [Name],\n\nHope you're having a productive week. Our diligence analysis has flagged a significant drop-off in the MQL-to-SQL conversion rate, which has fallen to 20% (an 80% leakage rate). This suggests a potential misalignment between marketing's lead generation and the sales team's qualification criteria.\n\nCould you please provide your perspective on the quality of leads received recently? I'd like to schedule a brief 30-minute meeting with you and the Head of Marketing to diagnose the root cause and align on a corrective action plan.\n\nBest,\nAria"></div>
+            <hr class="my-2 border-border-color">
+            <div class="response-text" data-typing-text="Hi [Name],\n\nHope you're having a productive week. Our diligence analysis has flagged a significant drop-off in the MQL-to-SQL conversion rate, which has fallen to 20% (an 80% leakage rate). This suggests a potential misalignment between marketing's lead generation and the sales team's qualification criteria.\n\nCould you please provide your perspective on the quality of leads received recently? I'd like to schedule a brief 30-minute meeting with you and the Head of Marketing to diagnose the root cause and align on a corrective action plan.\n\nBest,\nAria"></div>
         </div>`,
         followUpQuestions: []
     },
     "Estimate the cost and timeline for a monolith-to-microservices migration.": {
         id: 'estimate-migration',
         title: "Migration Cost & Timeline Estimate",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">High-Level Migration Estimate</h4>
-            <p class="text-sm mb-2">Based on analysis of the current codebase and team velocity, here is a preliminary estimate:</p>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">High-Level Migration Estimate</h4>
+            <p class="response-subtitle mb-2">Based on analysis of the current codebase and team velocity, here is a preliminary estimate:</p>
             <ul class="list-disc pl-5 space-y-2 text-sm" data-animate-list>
                 <li><span class="font-semibold">Estimated Timeline:</span> 18-24 months</li>
                 <li><span class="font-semibold">Required Team:</span> 2 dedicated "platform" squads (8-10 engineers)</li>
@@ -289,15 +288,15 @@ const techflow_ariaResponses = {
     "Generate a job description for a 'Lead DevOps Engineer'.": {
         id: 'generate-jd-devops',
         title: "Generated Job Description",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">Job Description: Lead DevOps Engineer</h4>
-            <p class="text-sm font-semibold">Responsibilities:</p>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">Job Description: Lead DevOps Engineer</h4>
+            <p class="response-section-title mt-2">Responsibilities:</p>
             <ul class="list-disc pl-5 text-sm" data-animate-list>
                 <li>Design, build, and maintain our CI/CD pipeline to improve developer velocity and deployment frequency.</li>
                 <li>Implement infrastructure-as-code (IaC) using Terraform and container orchestration using Kubernetes.</li>
                 <li>Champion DevOps best practices and mentor junior engineers.</li>
             </ul>
-            <p class="text-sm font-semibold mt-2">Qualifications:</p>
+            <p class="response-section-title mt-2">Qualifications:</p>
             <ul class="list-disc pl-5 text-sm" data-animate-list>
                 <li>5+ years of experience in a DevOps or SRE role.</li>
                 <li>Deep expertise with AWS, Docker, and Kubernetes.</li>
@@ -309,32 +308,32 @@ const techflow_ariaResponses = {
     "Draft an IC memo slide on technical debt.": {
         id: 'draft-ic-slide-tech-debt',
         title: "Draft IC Memo Slide on Technical Debt",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">IC Memo Slide: Technical Debt & Mitigation</h4>
-            <p class="text-sm font-semibold">The Situation:</p>
-            <p class="text-sm" data-typing-text="The core application is a legacy monolith, resulting in slow developer velocity (95-day cycle time vs. 45-day benchmark) and high R&D spend (32% of revenue vs. 20-25% benchmark)."></p>
-            <p class="text-sm font-semibold mt-2">The Risk:</p>
-            <p class="text-sm" data-typing-text="Inability to scale, innovate, or compete effectively. Will throttle growth within 18 months."></p>
-            <p class="text-sm font-semibold mt-2">The Plan:</p>
-            <p class="text-sm" data-typing-text="A 24-month, $4.5M migration to a microservices architecture. This will be a key pillar of the 100-day plan, led by a newly hired VP of Engineering."></p>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">IC Memo Slide: Technical Debt & Mitigation</h4>
+            <p class="response-section-title mt-2">The Situation:</p>
+            <p class="response-text" data-typing-text="The core application is a legacy monolith, resulting in slow developer velocity (95-day cycle time vs. 45-day benchmark) and high R&D spend (32% of revenue vs. 20-25% benchmark)."></p>
+            <p class="response-section-title mt-2">The Risk:</p>
+            <p class="response-text" data-typing-text="Inability to scale, innovate, or compete effectively. Will throttle growth within 18 months."></p>
+            <p class="response-section-title mt-2">The Plan:</p>
+            <p class="response-text" data-typing-text="A 24-month, $4.5M migration to a microservices architecture. This will be a key pillar of the 100-day plan, led by a newly hired VP of Engineering."></p>
         </div>`,
         followUpQuestions: []
     },
     "Draft an email to the CFO requesting clarification on revenue recognition policies.": {
         id: 'draft-email-rev-rec',
         title: "Draft Email to CFO",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50 font-sans text-sm">
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
             <p><span class="font-semibold">To:</span> CFO, TechFlow Solutions</p>
             <p><span class="font-semibold">Subject:</span> Diligence Question: Revenue Recognition for Perpetual Licenses</p>
-            <hr class="my-2">
-            <div data-typing-text="Hi [Name],\n\nAs part of our ongoing diligence, we are analyzing the composition of the company's ARR. We noted that revenue from some perpetual license contracts appears to be recognized over an 18-month period.\n\nCould you please provide the formal revenue recognition policy document that outlines the accounting treatment for these specific contracts? Understanding this is key to accurately assessing the quality of recurring revenue.\n\nAppreciate your help.\n\nBest,\nAria"></div>
+            <hr class="my-2 border-border-color">
+            <div class="response-text" data-typing-text="Hi [Name],\n\nAs part of our ongoing diligence, we are analyzing the composition of the company's ARR. We noted that revenue from some perpetual license contracts appears to be recognized over an 18-month period.\n\nCould you please provide the formal revenue recognition policy document that outlines the accounting treatment for these specific contracts? Understanding this is key to accurately assessing the quality of recurring revenue.\n\nAppreciate your help.\n\nBest,\nAria"></div>
         </div>`,
         followUpQuestions: []
     },
     "Request all contracts with non-standard terms be uploaded to the data room.": {
         id: 'request-contracts',
         title: "Request Contracts",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-green-50 text-green-800">
+        renderFunc: () => `<div class="aria-response-content build-item card-base text-success">
             <p data-typing-text="**Action Complete.** A formal request has been logged in the diligence tracker and sent to the deal team lead: 'Please request that the target company identify and upload all customer contracts containing non-standard termination or payment clauses to the 'Legal' folder in the data room by EOD tomorrow.'"></p>
         </div>`,
         followUpQuestions: []
@@ -342,16 +341,16 @@ const techflow_ariaResponses = {
     "Build the 'Base Case' financial model.": {
         id: 'build-base-case-model',
         title: "Generated 'Base Case' Financial Model",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">'Base Case' Financial Model (Adjusted from Management Case)</h4>
-            <table class="w-full text-sm text-left">
-                <thead class="border-b"><tr class="font-semibold"><th class="p-2">Metric</th><th class="p-2">Management Case (2025)</th><th class="p-2">Base Case (2025)</th><th class="p-2">Key Adjustment</th></tr></thead>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">'Base Case' Financial Model (Adjusted from Management Case)</h4>
+            <div class="data-table-container"><table class="data-table">
+                <thead><tr><th>Metric</th><th>Management Case (2025)</th><th>Base Case (2025)</th><th>Key Adjustment</th></tr></thead>
                 <tbody>
-                    <tr class="border-b"><td class="p-2 font-medium">New ARR Growth</td><td class="p-2">40%</td><td class="p-2 text-red-600 font-semibold">18%</td><td class="p-2">Aligned to historical + 3% uplift</td></tr>
-                    <tr class="border-b"><td class="p-2 font-medium">New Product Revenue</td><td class="p-2">$4.0M</td><td class="p-2 text-red-600 font-semibold">$0.5M</td><td class="p-2">Discounted by 87.5% due to launch risk</td></tr>
-                    <tr><td class="p-2 font-medium">Total Revenue</td><td class="p-2">$77M</td><td class="p-2 text-red-600 font-semibold">$62M</td><td class="p-2">Reflects lower growth assumptions</td></tr>
+                    <tr><td>New ARR Growth</td><td>40%</td><td class="text-error">18%</td><td>Aligned to historical + 3% uplift</td></tr>
+                    <tr><td>New Product Revenue</td><td>$4.0M</td><td class="text-error">$0.5M</td><td>Discounted by 87.5% due to launch risk</td></tr>
+                    <tr><td>Total Revenue</td><td>$77M</td><td class="text-error">$62M</td><td>Reflects lower growth assumptions</td></tr>
                 </tbody>
-            </table>
+            </table></div>
         </div>`,
         followUpQuestions: []
     }
@@ -369,16 +368,16 @@ const cloudvantage_ariaResponses = {
                 { account: 'Fusion Micro', segment: 'Bronze', value: 125000, date: 'September 14, 2025', circumstance: 'Technical Success' },
                 { account: 'Horizon Solutions', segment: 'Bronze', value: 95000, date: 'July 25, 2025', circumstance: 'Struggler' },
             ];
-            const segmentColors = { Gold: 'bg-yellow-400', Silver: 'bg-gray-300', Bronze: 'bg-yellow-600' };
-            return `<div class="space-y-4">
-                <div class="build-item"><p class="text-gray-700" data-typing-text="I've analyzed the upcoming renewals for the recently acquired 'NewCo' customers. Based on their current contract values and our standard pricing playbook, I've identified several uplift opportunities."></p></div>
-                <div class="build-item overflow-x-auto border rounded-lg"><table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50"><tr class="border-b"><th class="p-3 font-semibold text-gray-600">Account</th><th class="p-3 font-semibold text-gray-600">Segment</th><th class="p-3 font-semibold text-gray-600">Contract Value</th><th class="p-3 font-semibold text-gray-600">Renewal Date</th><th class="p-3 font-semibold text-gray-600">Circumstance</th></tr></thead>
-                    <tbody>${renewalOpportunities.map(c => `<tr class="border-t"><td class="p-3 font-medium text-gray-800">${c.account}</td><td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium text-gray-800 ${segmentColors[c.segment]}">${c.segment}</span></td><td class="p-3 text-gray-700">$${c.value.toLocaleString()}</td><td class="p-3 text-gray-700">${c.date}</td><td class="p-3 text-gray-700">${c.circumstance}</td></tr>`).join('')}</tbody>
+            const segmentColors = { Gold: 'var(--status-warning)', Silver: 'var(--text-muted)', Bronze: '#cd7f32' };
+            return `<div class="aria-response-content">
+                <div class="build-item"><p class="response-text" data-typing-text="I've analyzed the upcoming renewals for the recently acquired 'NewCo' customers. Based on their current contract values and our standard pricing playbook, I've identified several uplift opportunities."></p></div>
+                <div class="build-item data-table-container"><table class="data-table">
+                    <thead><tr><th>Account</th><th>Segment</th><th>Contract Value</th><th>Renewal Date</th><th>Circumstance</th></tr></thead>
+                    <tbody>${renewalOpportunities.map(c => `<tr><td>${c.account}</td><td><span class="status-badge" style="background-color:${segmentColors[c.segment]}20; color:${segmentColors[c.segment]}">${c.segment}</span></td><td>$${c.value.toLocaleString()}</td><td>${c.date}</td><td>${c.circumstance}</td></tr>`).join('')}</tbody>
                 </table></div>
-                <div class="build-item mt-4 p-4 bg-sky-50 border-l-4 border-sky-400 rounded-r-lg">
-                    <h4 class="font-semibold text-sky-800 mb-2">Pricing Playbook Recommendation:</h4>
-                    <ul class="list-disc list-outside pl-5 space-y-1 text-gray-700" data-animate-list>
+                <div class="build-item analysis-box">
+                    <h4 class="response-section-title">Pricing Playbook Recommendation:</h4>
+                    <ul class="list-disc list-outside pl-5 space-y-1 text-sm" data-animate-list>
                         <li><strong>20% uplift</strong> for Gold customers with "Business Success".</li>
                         <li><strong>10% uplift</strong> for Silver customers with "Business" or "Technical Success".</li>
                         <li><strong>25% uplift</strong> for all Bronze customers to align with standard pricing.</li>
@@ -391,46 +390,46 @@ const cloudvantage_ariaResponses = {
     "Analyze the current sales compensation plan for the Enterprise team.": {
         id: 'sales-comp-analysis',
         title: "Sales Comp Plan Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Sales Compensation Plan Analysis</h3><p class="text-sm text-gray-500">Source Documents: Sales_Comp_Plan_FY25.pdf, ...</p></div>
-            <div class="build-item"><p class="font-semibold">Key Findings:</p><ul class="list-disc pl-5 text-sm" data-animate-list><li>The current plan is 100% focused on New Business ARR, with no incentive for renewals or expansion.</li><li>Accelerators for over-performance are below market benchmarks, potentially capping motivation.</li><li>The plan does not include a component for selling newly acquired 'NewCo' products.</li></ul></div>
-            <div class="build-item bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg"><p class="font-bold text-amber-800">Judgement (Medium Confidence - 85%):</p><p class="text-amber-700" data-typing-text="The current compensation plan is misaligned with the strategic goal of increasing Net Revenue Retention (NRR). It actively discourages the sales team from focusing on the existing customer base and cross-selling opportunities."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Sales Compensation Plan Analysis</h3><p class="response-subtitle">Source Documents: Sales_Comp_Plan_FY25.pdf, ...</p></div>
+            <div class="build-item"><p class="response-section-title">Key Findings:</p><ul class="list-disc pl-5 text-sm" data-animate-list><li>The current plan is 100% focused on New Business ARR, with no incentive for renewals or expansion.</li><li>Accelerators for over-performance are below market benchmarks, potentially capping motivation.</li><li>The plan does not include a component for selling newly acquired 'NewCo' products.</li></ul></div>
+            <div class="build-item judgement-box warning"><p class="judgement-title">Judgement (Medium Confidence - 85%):</p><p class="judgement-text" data-typing-text="The current compensation plan is misaligned with the strategic goal of increasing Net Revenue Retention (NRR). It actively discourages the sales team from focusing on the existing customer base and cross-selling opportunities."></p></div>
         </div>`,
         followUpQuestions: ["Draft a revised sales comp plan.", "Model the financial impact of the new plan.", "What are the benchmarks for sales accelerators?"]
     },
     "What are the key drivers behind our current NPS score?": {
         id: 'nps-drivers',
         title: "NPS Driver Analysis",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">NPS Driver Analysis (Score: 52)</h3><p class="text-sm text-gray-500">Source Documents: NPS_Survey_Results_Q2.csv, ...</p></div>
-            <div class="build-item grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><h4 class="font-semibold text-green-600">Top Promoters (Score 9-10)</h4><ul class="list-disc pl-5 text-sm" data-animate-list><li>"Excellent customer support"</li><li>"Platform is reliable and always available"</li><li>"Deep domain expertise of the team"</li></ul></div>
-                <div><h4 class="font-semibold text-red-600">Top Detractors (Score 0-6)</h4><ul class="list-disc pl-5 text-sm" data-animate-list><li>"Lack of key features compared to competitors"</li><li>"The user interface feels outdated"</li><li>"Integration with our other tools is difficult"</li></ul></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">NPS Driver Analysis (Score: 52)</h3><p class="response-subtitle">Source Documents: NPS_Survey_Results_Q2.csv, ...</p></div>
+            <div class="build-item grid md:grid-cols-2 gap-4">
+                <div><h4 class="response-section-title text-success">Top Promoters (Score 9-10)</h4><ul class="list-disc pl-5 text-sm" data-animate-list><li>"Excellent customer support"</li><li>"Platform is reliable and always available"</li><li>"Deep domain expertise of the team"</li></ul></div>
+                <div><h4 class="response-section-title text-error">Top Detractors (Score 0-6)</h4><ul class="list-disc pl-5 text-sm" data-animate-list><li>"Lack of key features compared to competitors"</li><li>"The user interface feels outdated"</li><li>"Integration with our other tools is difficult"</li></ul></div>
             </div>
-            <div class="build-item bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg"><p class="font-bold text-green-800">Judgement (High Confidence - 92%):</p><p class="text-green-700" data-typing-text="The high NPS score is primarily driven by strong customer service and reliability, not product superiority. While this is a strength, it's a fragile position. The feedback from detractors clearly indicates a growing product gap that needs to be addressed to maintain customer loyalty long-term."></p></div>
+            <div class="build-item judgement-box success"><p class="judgement-title">Judgement (High Confidence - 92%):</p><p class="judgement-text" data-typing-text="The high NPS score is primarily driven by strong customer service and reliability, not product superiority. While this is a strength, it's a fragile position. The feedback from detractors clearly indicates a growing product gap that needs to be addressed to maintain customer loyalty long-term."></p></div>
         </div>`,
         followUpQuestions: ["Which features are detractors asking for most?", "What is the status of the UI refresh project?", "How can we improve the integration experience?"]
     },
     "Generate a board-level summary of Q2 financial performance.": {
         id: 'q2-summary',
         title: "Q2 Financial Performance Summary",
-        renderFunc: () => `<div class="space-y-4">
-            <div class="build-item"><h3 class="font-semibold text-lg">Q2 2025 Financial Summary</h3><p class="text-sm text-gray-500">Source Documents: Q2_Financial_Package.xlsx, ...</p></div>
-            <div class="build-item grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-gray-50 p-4 rounded-lg text-center"><p class="text-sm text-gray-600">ARR</p><p class="text-2xl font-bold text-blue-600">$78M</p><p class="text-sm text-green-600">+4% QoQ</p></div>
-                <div class="bg-gray-50 p-4 rounded-lg text-center"><p class="text-sm text-gray-600">NRR</p><p class="text-2xl font-bold text-green-600">128%</p><p class="text-sm text-green-600">+3% vs Target</p></div>
-                <div class="bg-gray-50 p-4 rounded-lg text-center"><p class="text-sm text-gray-600">EBITDA Margin</p><p class="text-2xl font-bold text-green-600">31%</p><p class="text-sm text-red-600">-1% vs Target</p></div>
-                <div class="bg-gray-50 p-4 rounded-lg text-center"><p class="text-sm text-gray-600">Rule of 40</p><p class="text-2xl font-bold text-green-600">58%</p><p class="text-sm text-gray-500">Healthy</p></div>
-            </div>
-            <div class="build-item"><p class="font-semibold">Executive Summary:</p><p class="text-gray-700" data-typing-text="CloudVantage delivered a strong Q2, exceeding ARR targets driven by robust Net Revenue Retention of 128%. This indicates strong product stickiness and successful expansion within the existing customer base. EBITDA margin was slightly below target due to planned investments in the 'NewCo' integration and R&D for the upcoming AI feature. Overall, the business remains healthy and is tracking well against the annual plan."></p></div>
+        renderFunc: () => `<div class="aria-response-content">
+            <div class="build-item"><h3 class="response-title">Q2 2025 Financial Summary</h3><p class="response-subtitle">Source Documents: Q2_Financial_Package.xlsx, ...</p></div>
+            <div class="build-item kpi-grid">${[
+                { label: 'ARR', value: '$78M', change: '+4% QoQ', changeColor: 'var(--status-success)' },
+                { label: 'NRR', value: '128%', change: '+3% vs Target', changeColor: 'var(--status-success)' },
+                { label: 'EBITDA Margin', value: '31%', change: '-1% vs Target', changeColor: 'var(--status-error)' },
+                { label: 'Rule of 40', value: '58%', change: 'Healthy', changeColor: 'var(--text-muted)' }
+            ].map(kpi => `<div class="kpi-card"><p class="kpi-label">${kpi.label}</p><p class="kpi-value">${kpi.value}</p><p class="kpi-detail" style="color: ${kpi.changeColor};">${kpi.change}</p></div>`).join('')}</div>
+            <div class="build-item"><p class="response-section-title">Executive Summary:</p><p class="response-text" data-typing-text="CloudVantage delivered a strong Q2, exceeding ARR targets driven by robust Net Revenue Retention of 128%. This indicates strong product stickiness and successful expansion within the existing customer base. EBITDA margin was slightly below target due to planned investments in the 'NewCo' integration and R&D for the upcoming AI feature. Overall, the business remains healthy and is tracking well against the annual plan."></p></div>
         </div>`,
         followUpQuestions: ["Analyze the key drivers of our Net Revenue Retention.", "What caused the dip in EBITDA margin?", "What is the forecast for Q3?"]
     },
     "Draft a revised sales comp plan.": {
         id: 'draft-sales-comp',
         title: "Draft Sales Comp Plan",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">Draft: Revised Sales Comp Plan</h4>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">Draft: Revised Sales Comp Plan</h4>
             <ul class="list-disc pl-5 space-y-2 text-sm" data-animate-list>
                 <li><strong>Structure:</strong> 70% Base / 30% Variable</li>
                 <li><strong>Commission:</strong> 60% New Business ARR, 30% Expansion ARR (Upsell/Cross-sell), 10% Renewal Rate Modifier.</li>
@@ -443,19 +442,30 @@ const cloudvantage_ariaResponses = {
     "Model the financial impact of a 5% price increase on the legacy NewCo customer base.": {
         id: 'model-price-increase',
         title: "Price Increase Impact Model",
-        renderFunc: () => `<div class="build-item p-4 border rounded-lg bg-gray-50">
-            <h4 class="font-bold text-lg mb-2">Scenario: 5% Price Increase on NewCo Base</h4>
-            <table class="w-full text-sm text-left">
-                <thead class="border-b"><tr class="font-semibold"><th class="p-2">Metric</th><th class="p-2">Current</th><th class="p-2">Projected</th><th class="p-2">Impact</th></tr></thead>
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <h4 class="response-title">Scenario: 5% Price Increase on NewCo Base</h4>
+            <div class="data-table-container"><table class="data-table">
+                <thead><tr><th>Metric</th><th>Current</th><th>Projected</th><th>Impact</th></tr></thead>
                 <tbody>
-                    <tr class="border-b"><td class="p-2 font-medium">NewCo Customer ARR</td><td class="p-2">$15.2M</td><td class="p-2">$15.5M</td><td class="p-2 text-green-600">+$0.3M</td></tr>
-                    <tr class="border-b"><td class="p-2 font-medium">Assumed Churn Increase</td><td class="p-2">0%</td><td class="p-2">2%</td><td class="p-2 text-red-600">-$0.3M</td></tr>
-                    <tr><td class="p-2 font-medium">Net ARR Impact</td><td class="p-2"></td><td class="p-2 font-bold">$0</td><td class="p-2">Neutral</td></tr>
+                    <tr><td>NewCo Customer ARR</td><td>$15.2M</td><td>$15.5M</td><td class="text-success">+$0.3M</td></tr>
+                    <tr><td>Assumed Churn Increase</td><td>0%</td><td>2%</td><td class="text-error">-$0.3M</td></tr>
+                    <tr><td>Net ARR Impact</td><td></td><td class="font-bold">$0</td><td>Neutral</td></tr>
                 </tbody>
-            </table>
-            <p class="text-xs text-gray-500 mt-2" data-typing-text="**Note:** The model assumes a 2% increase in churn directly attributable to the price increase, resulting in a net-neutral ARR impact. This suggests the price increase is too low to offset the potential churn risk."></p>
+            </table></div>
+            <p class="response-subtitle mt-2" data-typing-text="**Note:** The model assumes a 2% increase in churn directly attributable to the price increase, resulting in a net-neutral ARR impact. This suggests the price increase is too low to offset the potential churn risk."></p>
         </div>`,
         followUpQuestions: ["What if we model a 10% increase?", "Can we segment customers to apply the increase selectively?"]
+    },
+    "Draft a communication plan to NewCo customers about the acquisition.": {
+        id: 'draft-comm-plan',
+        title: "Draft Customer Communication",
+        renderFunc: () => `<div class="aria-response-content build-item card-base">
+            <p><span class="font-semibold">To:</span> Valued NewCo Customer</p>
+            <p><span class="font-semibold">Subject:</span> Exciting News: NewCo is Joining CloudVantage!</p>
+            <hr class="my-2 border-border-color">
+            <div class="response-text" data-typing-text="Dear [Customer Name],\n\nWe are thrilled to announce that NewCo has been acquired by CloudVantage, a leader in the enterprise software space. This partnership will bring together the best of both companies, accelerating innovation and delivering even more value to you.\n\nThere will be no immediate changes to your service, and your current points of contact will remain the same. We are committed to a smooth transition and will be sharing more details about the exciting future ahead in the coming weeks.\n\nSincerely,\nThe CloudVantage & NewCo Teams"></div>
+        </div>`,
+        followUpQuestions: []
     }
 };
 

@@ -55,80 +55,74 @@ function renderPortcoPage(companyId) {
 }
 
 // =================================================================
-// DASHBOARD RENDERING FUNCTIONS (NOW COMPLETE)
+// DASHBOARD RENDERING FUNCTIONS (NOW THEMED)
 // =================================================================
 
-/**
- * THIS FUNCTION NOW CONTAINS THE FULL HTML FOR THE TECHFLOW DASHBOARD
- */
 function renderTechFlowDashboard() {
     const workstreams = [
-        { title: 'Data Extraction', status: 'Completed', statusColor: 'bg-green-100 text-green-800', metrics: [{value: 247, label: 'Documents'}, {value: '1,834', label: 'Data Points'}] },
-        { title: 'Anomaly Detection', status: 'In Progress', statusColor: 'bg-sky-100 text-sky-800', alert: true, metrics: [{value: '3', label: 'Critical Flags'}, {value: '12', label: 'Minor Issues'}] },
-        { title: 'Valuation Modeling', status: 'Completed', statusColor: 'bg-green-100 text-green-800', metrics: [{value: '$85M', label: 'Valuation'}, {value: '6.8x', label: 'Revenue Multiple'}] },
-        { title: 'Synergy Analysis', status: 'In Progress', statusColor: 'bg-sky-100 text-sky-800', metrics: [{value: '67%', label: 'Portfolio Fit'}, {value: '$8.2M', label: 'Synergy Value'}] },
-        { title: 'Growth Modeling', status: 'Pending', statusColor: 'bg-violet-100 text-violet-800', metrics: [{value: '-', label: 'Scenarios'}, {value: '-', label: 'Growth Rate'}] },
-        { title: 'IC Dashboard', status: 'Pending', statusColor: 'bg-violet-100 text-violet-800', metrics: [{value: 'T-5 Days', label: 'Readiness'}, {value: '5', label: 'Days Remaining'}] }
+        { title: 'Data Extraction', status: 'Completed', statusClass: 'status-completed', metrics: [{value: 247, label: 'Documents'}, {value: '1,834', label: 'Data Points'}] },
+        { title: 'Anomaly Detection', status: 'In Progress', statusClass: 'status-progress', alert: true, metrics: [{value: '3', label: 'Critical Flags'}, {value: '12', label: 'Minor Issues'}] },
+        { title: 'Valuation Modeling', status: 'Completed', statusClass: 'status-completed', metrics: [{value: '$85M', label: 'Valuation'}, {value: '6.8x', label: 'Revenue Multiple'}] },
+        { title: 'Synergy Analysis', status: 'In Progress', statusClass: 'status-progress', metrics: [{value: '67%', label: 'Portfolio Fit'}, {value: '$8.2M', label: 'Synergy Value'}] },
+        { title: 'Growth Modeling', status: 'Pending', statusClass: 'status-pending', metrics: [{value: '-', label: 'Scenarios'}, {value: '-', label: 'Growth Rate'}] },
+        { title: 'IC Dashboard', status: 'Pending', statusClass: 'status-pending', metrics: [{value: 'T-5 Days', label: 'Readiness'}, {value: '5', label: 'Days Remaining'}] }
     ];
 
     return `
-        <div class="space-y-8">
-            <div class="flex flex-wrap justify-between items-center gap-4 pb-6 border-b border-gray-200">
-                <div><h1 class="text-3xl font-bold text-gray-800">TechFlow Solutions</h1><p class="text-md text-gray-500">Series B SaaS • $55M ARR • Day 9 of 14</p></div>
-                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-800 font-semibold"><span class="relative flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span></span>Analysis in Progress</div>
+        <div class="portco-container">
+            <div class="portco-header">
+                <div><h1 class="portco-title">TechFlow Solutions</h1><p class="portco-subtitle">Series B SaaS • $55M ARR • Day 9 of 14</p></div>
+                <div class="portco-status-badge status-progress"><span class="status-ping"></span>Analysis in Progress</div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                <div class="flex justify-between items-center mb-2"><h2 class="text-lg font-semibold text-gray-700">Due Diligence Progress</h2><span class="font-semibold text-gray-800">65% Complete</span></div>
-                <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: 65%"></div></div>
-                <div class="flex justify-between text-xs text-gray-500 mt-2"><span>Day 1</span><span>Decision Ready (Day 14)</span></div>
+            <div class="portco-card">
+                <div class="progress-header"><h2 class="card-title">Due Diligence Progress</h2><span class="progress-percent">65% Complete</span></div>
+                <div class="progress-bar-container"><div class="progress-bar-fill" style="width: 65%"></div></div>
+                <div class="progress-labels"><span>Day 1</span><span>Decision Ready (Day 14)</span></div>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1 space-y-8">
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100"><h2 class="text-lg font-semibold text-gray-700 mb-4">Live Scorecard</h2><div class="grid grid-cols-2 gap-4"><div class="text-center bg-gray-50 p-4 rounded-lg"><p class="text-sm font-medium text-gray-600">Financial Health</p><p class="text-2xl font-bold text-green-600">8.4</p></div><div class="text-center bg-gray-50 p-4 rounded-lg"><p class="text-sm font-medium text-gray-600">Operations</p><p class="text-2xl font-bold text-sky-600">7.8</p></div><div class="text-center bg-gray-50 p-4 rounded-lg"><p class="text-sm font-medium text-gray-600">Growth Potential</p><p class="text-2xl font-bold text-violet-600">9.1</p></div><div class="text-center bg-gray-50 p-4 rounded-lg"><p class="text-sm font-medium text-gray-600">Strategic Fit</p><p class="text-2xl font-bold text-amber-600">6.7</p></div></div></div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100"><h2 class="text-lg font-semibold text-gray-700 mb-4">Recent Activity</h2><div class="space-y-3"><div class="p-3 rounded-md bg-green-50 border border-green-200"><p class="font-semibold text-sm text-green-800">Valuation Model Complete</p><p class="text-xs text-gray-500">2 hours ago</p></div><div class="p-3 rounded-md bg-red-50 border border-red-200"><p class="font-semibold text-sm text-red-800">Customer Churn Anomaly Detected</p><p class="text-xs text-gray-500">4 hours ago</p></div><div class="p-3 rounded-md bg-sky-50 border border-sky-200"><p class="font-semibold text-sm text-sky-800">Synergy Analysis Updated</p><p class="text-xs text-gray-500">6 hours ago</p></div></div></div>
+            <div class="portco-grid-2-1">
+                <div class="space-y-8">
+                    <div class="portco-card"><h2 class="card-title">Live Scorecard</h2><div class="scorecard-grid"><div class="score-item"><p class="score-label">Financial Health</p><p class="score-value" style="color:var(--status-success)">8.4</p></div><div class="score-item"><p class="score-label">Operations</p><p class="score-value" style="color:var(--accent-blue)">7.8</p></div><div class="score-item"><p class="score-label">Growth Potential</p><p class="score-value" style="color:var(--purple)">9.1</p></div><div class="score-item"><p class="score-label">Strategic Fit</p><p class="score-value" style="color:var(--status-warning)">6.7</p></div></div></div>
+                    <div class="portco-card"><h2 class="card-title">Recent Activity</h2><div class="activity-list"><div class="activity-item activity-success"><p class="activity-title">Valuation Model Complete</p><p class="activity-time">2 hours ago</p></div><div class="activity-item activity-error"><p class="activity-title">Customer Churn Anomaly Detected</p><p class="activity-time">4 hours ago</p></div><div class="activity-item activity-info"><p class="activity-title">Synergy Analysis Updated</p><p class="activity-time">6 hours ago</p></div></div></div>
                 </div>
-                <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                    <h2 class="text-lg font-semibold text-gray-700 mb-4">Diligence Workstreams</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">${workstreams.map(ws => `<div class="relative p-4 border rounded-lg ${ws.alert ? 'cursor-pointer hover:shadow-lg hover:border-blue-400 transition-all' : 'bg-gray-50'}" ${ws.alert ? 'data-action="navigate-aria" data-context="anomaly-report"' : ''}>${ws.alert ? '<span class="absolute top-2 right-2 flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span></span>' : ''}<div class="flex justify-between items-center mb-3"><h3 class="font-bold text-gray-800">${ws.title}</h3><span class="text-xs font-semibold px-2 py-1 rounded-full ${ws.statusColor}">${ws.status}</span></div><div class="flex justify-around text-center border-t pt-3">${ws.metrics.map(m => `<div><p class="text-xl font-bold text-gray-800">${m.value}</p><p class="text-xs text-gray-500 uppercase tracking-wider">${m.label}</p></div>`).join('')}</div></div>`).join('')}</div>
+                <div class="portco-card">
+                    <h2 class="card-title">Diligence Workstreams</h2>
+                    <div class="workstream-grid">${workstreams.map(ws => `<div class="workstream-card ${ws.alert ? 'alert' : ''}" ${ws.alert ? 'data-action="navigate-aria" data-context="anomaly-report"' : ''}>${ws.alert ? '<span class="workstream-alert-dot"></span>' : ''}<div class="workstream-header"><h3 class="workstream-title">${ws.title}</h3><span class="workstream-status ${ws.statusClass}">${ws.status}</span></div><div class="workstream-metrics">${ws.metrics.map(m => `<div><p class="workstream-value">${m.value}</p><p class="workstream-label">${m.label}</p></div>`).join('')}</div></div>`).join('')}</div>
                 </div>
             </div>
         </div>
     `;
 }
 
-/**
- * THIS FUNCTION NOW CONTAINS THE FULL HTML FOR THE CLOUDVANTAGE DASHBOARD
- */
 function renderCloudVantageDashboard() {
     const kpis = [
-        { label: 'ARR', value: '$78M', change: '+4% QoQ', changeColor: 'text-green-600' },
-        { label: 'Net Revenue Retention', value: '128%', change: '+3% vs Target', changeColor: 'text-green-600' },
-        { label: 'EBITDA Margin', value: '31%', change: '-1% vs Target', changeColor: 'text-red-600' },
-        { label: 'Rule of 40', value: '58%', change: 'Healthy', changeColor: 'text-green-600' }
+        { label: 'ARR', value: '$78M', change: '+4% QoQ', changeColor: 'var(--status-success)' },
+        { label: 'Net Revenue Retention', value: '128%', change: '+3% vs Target', changeColor: 'var(--status-success)' },
+        { label: 'EBITDA Margin', value: '31%', change: '-1% vs Target', changeColor: 'var(--status-error)' },
+        { label: 'Rule of 40', value: '58%', change: 'Healthy', changeColor: 'var(--status-success)' }
     ];
     const programs = [
-        { name: 'Enterprise GTM Strategy', dept: 'Sales', status: 'On Track', statusColor: 'bg-green-100 text-green-800', progress: 75 },
-        { name: 'ABM Campaign Launch', dept: 'Marketing', status: 'On Track', statusColor: 'bg-green-100 text-green-800', progress: 90 },
-        { name: 'Channel Partner Program', dept: 'Partners', status: 'At Risk', statusColor: 'bg-yellow-100 text-yellow-800', progress: 45 },
-        { name: 'Platform Scalability Initiative', dept: 'Engineering', status: 'On Track', statusColor: 'bg-green-100 text-green-800', progress: 60 },
-        { name: 'AI-Powered Feature Dev', dept: 'Product', status: 'Behind', statusColor: 'bg-red-100 text-red-800', progress: 30 },
-        { name: 'Leadership Development', dept: 'HR', status: 'On Track', statusColor: 'bg-green-100 text-green-800', progress: 85 }
+        { name: 'Enterprise GTM Strategy', dept: 'Sales', status: 'On Track', statusClass: 'status-completed', progress: 75 },
+        { name: 'ABM Campaign Launch', dept: 'Marketing', status: 'On Track', statusClass: 'status-completed', progress: 90 },
+        { name: 'Channel Partner Program', dept: 'Partners', status: 'At Risk', statusClass: 'status-warning', progress: 45 },
+        { name: 'Platform Scalability Initiative', dept: 'Engineering', status: 'On Track', statusClass: 'status-completed', progress: 60 },
+        { name: 'AI-Powered Feature Dev', dept: 'Product', status: 'Behind', statusClass: 'status-error', progress: 30 },
+        { name: 'Leadership Development', dept: 'HR', status: 'On Track', statusClass: 'status-completed', progress: 85 }
     ];
     return `
-        <div class="space-y-8">
-            <div class="flex flex-wrap justify-between items-center gap-4 pb-6 border-b border-gray-200">
-                <div><h1 class="text-3xl font-bold text-gray-800">CloudVantage</h1><p class="text-md text-gray-500">Growth Stage • Q2 2025</p></div>
-                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 font-semibold"><span class="relative flex h-3 w-3"><span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span></span>Healthy</div>
+        <div class="portco-container">
+            <div class="portco-header">
+                <div><h1 class="portco-title">CloudVantage</h1><p class="portco-subtitle">Growth Stage • Q2 2025</p></div>
+                <div class="portco-status-badge status-completed"><span class="status-dot-solid"></span>Healthy</div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">${kpis.map(kpi => `<div class="bg-white p-6 rounded-lg shadow-md border border-gray-100"><p class="text-sm font-bold text-gray-700 mb-1">${kpi.label}</p><p class="text-3xl font-bold text-blue-600">${kpi.value}</p><p class="text-sm ${kpi.changeColor} mt-1">${kpi.change}</p></div>`).join('')}</div>
-            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                <h2 class="text-lg font-semibold text-gray-700 mb-4">Active Programs</h2>
-                <div class="space-y-3">${programs.map(p => `<div class="grid grid-cols-12 gap-4 items-center p-3 rounded-md bg-gray-50"><div class="col-span-12 sm:col-span-3 font-semibold text-gray-800">${p.name}</div><div class="col-span-6 sm:col-span-2 text-sm text-gray-600">${p.dept}</div><div class="col-span-6 sm:col-span-2"><span class="text-xs font-semibold px-2 py-1 rounded-full ${p.statusColor}">${p.status}</span></div><div class="col-span-10 sm:col-span-4"><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-blue-600 h-2.5 rounded-full" style="width: ${p.progress}%"></div></div></div><div class="col-span-2 sm:col-span-1 text-sm font-medium text-gray-700 text-right">${p.progress}%</div></div>`).join('')}</div>
+            <div class="kpi-grid">${kpis.map(kpi => `<div class="kpi-card"><p class="kpi-label">${kpi.label}</p><p class="kpi-value">${kpi.value}</p><p class="kpi-detail" style="color: ${kpi.changeColor};">${kpi.change}</p></div>`).join('')}</div>
+            <div class="portco-card">
+                <h2 class="card-title">Active Programs</h2>
+                <div class="program-list">${programs.map(p => `<div class="program-item"><div class="program-name">${p.name}</div><div class="program-dept">${p.dept}</div><div class="program-status-wrapper"><span class="program-status ${p.statusClass}">${p.status}</span></div><div class="program-progress-container"><div class="program-progress-bar" style="width: ${p.progress}%"></div></div><div class="program-progress-text">${p.progress}%</div></div>`).join('')}</div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-                <h2 class="text-lg font-semibold text-gray-700 mb-4">Departmental Updates</h2>
-                <div class="border-b border-gray-200 mb-4"><nav class="flex -mb-px overflow-x-auto" data-tab-group="dept"><button data-tab-name="sales" class="tab-button active flex-shrink-0">Sales</button><button data-tab-name="marketing" class="tab-button flex-shrink-0">Marketing</button><button data-tab-name="product" class="tab-button flex-shrink-0">Product</button><button data-tab-name="engineering" class="tab-button flex-shrink-0">Engineering</button><button data-tab-name="hr" class="tab-button flex-shrink-0">HR</button></nav></div>
-                <div id="dept-content-container"></div>
+            <div class="portco-card">
+                <h2 class="card-title">Departmental Updates</h2>
+                <div class="tabs-container"><nav class="tab-nav" data-tab-group="dept"><button data-tab-name="sales" class="tab-button active">Sales</button><button data-tab-name="marketing" class="tab-button">Marketing</button><button data-tab-name="product" class="tab-button">Product</button><button data-tab-name="engineering" class="tab-button">Engineering</button><button data-tab-name="hr" class="tab-button">HR</button></nav></div>
+                <div id="dept-content-container" class="tab-content-area"></div>
             </div>
         </div>
     `;
@@ -137,14 +131,14 @@ function renderCloudVantageDashboard() {
 function renderGenericDashboard(companyId) {
     const title = companyId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     return `
-        <div class="space-y-8">
-            <div class="flex flex-wrap justify-between items-center gap-4 pb-6 border-b border-gray-200">
-                <div><h1 class="text-3xl font-bold text-gray-800">${title}</h1><p class="text-md text-gray-500">Strategize Stage</p></div>
-                <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 font-semibold"><span class="relative flex h-3 w-3"><span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span></span>Healthy</div>
+        <div class="portco-container">
+            <div class="portco-header">
+                <div><h1 class="portco-title">${title}</h1><p class="portco-subtitle">Strategize Stage</p></div>
+                <div class="portco-status-badge status-completed"><span class="status-dot-solid"></span>Healthy</div>
             </div>
-            <div class="bg-white p-8 rounded-lg shadow-md border text-center">
-                <h2 class="text-xl font-semibold text-gray-700">Dashboard Under Construction</h2>
-                <p class="text-gray-500 mt-2">A detailed dashboard for ${title} is being configured.</p>
+            <div class="portco-card text-center p-8">
+                <h2 class="card-title">Dashboard Under Construction</h2>
+                <p class="text-secondary mt-2">A detailed dashboard for ${title} is being configured.</p>
             </div>
         </div>
     `;
@@ -161,27 +155,27 @@ function initializeCloudVantageInteractions() {
 
     const deptContents = {
         sales: {
-            metrics: [ { label: 'Quota Attainment', value: '103%', color: 'text-green-600' }, { label: 'Pipeline Coverage', value: '3.5x', color: 'text-gray-800' }, { label: 'Avg. Deal Size', value: '$85k', color: 'text-gray-800' }, { label: 'Budget Adherence', value: '+3.1%', color: 'text-red-600' } ],
+            metrics: [ { label: 'Quota Attainment', value: '103%', color: 'var(--status-success)' }, { label: 'Pipeline Coverage', value: '3.5x', color: 'var(--text-primary)' }, { label: 'Avg. Deal Size', value: '$85k', color: 'var(--text-primary)' }, { label: 'Budget Adherence', value: '+3.1%', color: 'var(--status-error)' } ],
             content: `<p><strong class="font-semibold">Highlights:</strong> Exceeded quota, driven by strong performance in the new Enterprise segment. Landed two Fortune 500 logos.</p><p><strong class="font-semibold">Lowlights:</strong> Mid-market team struggled, hitting only 85% of their number. Budget overage due to higher commission payouts on large deals.</p><p><strong class="font-semibold">Next Period Focus:</strong> Double down on Enterprise playbook, provide additional training for mid-market reps.</p><p><strong class="font-semibold">Help Wanted:</strong> Need marketing to accelerate SQL delivery for the mid-market segment.</p>`,
             context: 'sales-renewals'
         },
         marketing: {
-            metrics: [ { label: 'MQLs vs Target', value: '115%', color: 'text-green-600' }, { label: 'SQLs vs Target', value: '92%', color: 'text-yellow-600' }, { label: 'CAC', value: '$12.5k', color: 'text-gray-800' }, { label: 'Budget Adherence', value: '-1.5%', color: 'text-green-600' } ],
+            metrics: [ { label: 'MQLs vs Target', value: '115%', color: 'var(--status-success)' }, { label: 'SQLs vs Target', value: '92%', color: 'var(--status-warning)' }, { label: 'CAC', value: '$12.5k', color: 'var(--text-primary)' }, { label: 'Budget Adherence', value: '-1.5%', color: 'var(--status-success)' } ],
             content: `<p><strong class="font-semibold">Highlights:</strong> ABM campaign for Enterprise was a huge success, generating high-quality leads. Managed budget effectively.</p><p><strong class="font-semibold">Lowlights:</strong> MQL-to-SQL conversion rate dropped, indicating some lead quality issues in our top-of-funnel content.</p><p><strong class="font-semibold">Next Period Focus:</strong> Optimize lead scoring model, launch targeted mid-market campaigns.</p><p><strong class="font-semibold">Help Wanted:</strong> Sales feedback on lead quality is critical to our optimization efforts.</p>`,
             context: 'marketing'
         },
         product: {
-            metrics: [ { label: 'Roadmap Adherence', value: '70%', color: 'text-red-600' }, { label: 'Feature Adoption', value: '45%', color: 'text-gray-800' }, { label: 'NPS', value: '52', color: 'text-green-600' }, { label: 'Budget Adherence', value: '+5.2%', color: 'text-red-600' } ],
+            metrics: [ { label: 'Roadmap Adherence', value: '70%', color: 'var(--status-error)' }, { label: 'Feature Adoption', value: '45%', color: 'var(--text-primary)' }, { label: 'NPS', value: '52', color: 'var(--status-success)' }, { label: 'Budget Adherence', value: '+5.2%', color: 'var(--status-error)' } ],
             content: `<p><strong class="font-semibold">Highlights:</strong> Successfully launched two major platform enhancements which have received positive customer feedback and contributed to a high NPS score.</p><p><strong class="font-semibold">Lowlights:</strong> The flagship AI-Powered Feature is significantly delayed due to unforeseen technical complexity. This has caused budget overruns.</p><p><strong class="font-semibold">Next Period Focus:</strong> Finalize a revised, de-risked timeline for the AI feature. Conduct customer interviews to validate the next set of roadmap priorities.</p><p><strong class="font-semibold">Help Wanted:</strong> Need engineering to provide a firm estimate on the remaining work for the AI feature to reset expectations.</p>`,
             context: 'product'
         },
         engineering: {
-            metrics: [ { label: 'Sprint Completion', value: '88%', color: 'text-yellow-600' }, { label: 'Cycle Time', value: '4.2d', color: 'text-gray-800' }, { label: 'Uptime', value: '99.98%', color: 'text-green-600' }, { label: 'Budget Adherence', value: '+2.8%', color: 'text-yellow-600' } ],
+            metrics: [ { label: 'Sprint Completion', value: '88%', color: 'var(--status-warning)' }, { label: 'Cycle Time', value: '4.2d', color: 'var(--text-primary)' }, { label: 'Uptime', value: '99.98%', color: 'var(--status-success)' }, { label: 'Budget Adherence', value: '+2.8%', color: 'var(--status-warning)' } ],
             content: `<p><strong class="font-semibold">Highlights:</strong> Maintained excellent platform stability and uptime. Successfully completed critical scalability work ahead of schedule.</p><p><strong class="font-semibold">Lowlights:</strong> Team velocity was impacted by the complexity of the AI feature, leading to lower sprint completion rates. Some technical debt was incurred to meet deadlines.</p><p><strong class="font-semibold">Next Period Focus:</strong> Dedicate one sprint to tech debt reduction. Finalize architecture for the AI feature.</p><p><strong class="font-semibold">Help Wanted:</strong> Clearer, finalized requirements from Product for the AI feature to prevent further scope creep.</p>`,
             context: 'engineering'
         },
         hr: {
-            metrics: [ { label: 'Employee Attrition', value: '8%', color: 'text-green-600' }, { label: 'Time to Hire', value: '42d', color: 'text-gray-800' }, { label: 'eNPS', value: '65', color: 'text-green-600' }, { label: 'Budget Adherence', value: '-2.1%', color: 'text-green-600' } ],
+            metrics: [ { label: 'Employee Attrition', value: '8%', color: 'var(--status-success)' }, { label: 'Time to Hire', value: '42d', color: 'var(--text-primary)' }, { label: 'eNPS', value: '65', color: 'var(--status-success)' }, { label: 'Budget Adherence', value: '-2.1%', color: 'var(--status-success)' } ],
             content: `<p><strong class="font-semibold">Highlights:</strong> Employee satisfaction (eNPS) is at an all-time high. Attrition remains well below industry average. The leadership development program is receiving excellent feedback.</p><p><strong class="font-semibold">Lowlights:</strong> Time to hire for senior engineering roles remains a challenge.</p><p><strong class="font-semibold">Next Period Focus:</strong> Launch a new employee referral program to improve the engineering talent pipeline. Complete the annual compensation review.</p><p><strong class="font-semibold">Help Wanted:</strong> Engineering managers' participation in final-round interviews to speed up the hiring process.</p>`,
             context: 'hr'
         }
@@ -192,9 +186,9 @@ function initializeCloudVantageInteractions() {
         if (!deptData) return;
         
         deptContentContainer.innerHTML = `
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">${deptData.metrics.map(metric => `<div class="bg-gray-50 p-4 rounded-lg text-center"><p class="text-sm text-gray-600">${metric.label}</p><p class="text-2xl font-bold ${metric.color}">${metric.value}</p></div>`).join('')}</div>
-            <div class="text-base text-gray-700 space-y-3 mt-4">${deptData.content}</div>
-            <div class="flex justify-end mt-4"><button data-action="navigate-aria" data-context="${deptData.context}" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">Dive Deeper with Aria</button></div>
+            <div class="dept-kpi-grid">${deptData.metrics.map(metric => `<div class="dept-kpi-item"><p class="dept-kpi-label">${metric.label}</p><p class="dept-kpi-value" style="color: ${metric.color};">${metric.value}</p></div>`).join('')}</div>
+            <div class="dept-content">${deptData.content}</div>
+            <div class="dept-actions"><button data-action="navigate-aria" data-context="${deptData.context}" class="primary-button">Dive Deeper with Aria</button></div>
         `;
     }
 
