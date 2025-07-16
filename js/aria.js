@@ -578,4 +578,4 @@ function updatePromptContainer(state) {
              promptContainer.outerHTML = getAdvancedPromptBoxHTML([]);
         }
     }
-}
+} 
